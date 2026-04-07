@@ -346,11 +346,11 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
   background:linear-gradient(135deg,#3A2A14 0%,#5C4020 50%,#3A2A14 100%);
   border:1px solid rgba(184,144,74,.4);
   padding:14px 48px;border-radius:60px;cursor:pointer;
-  box-shadow:0 8px 28px rgba(42,28,14,.25),0 0 0 0 rgba(184,144,74,.2);
+  box-shadow:0 4px 16px rgba(42,28,14,.12),0 0 0 0 rgba(184,144,74,.1);
   transition:all .35s ease;
   animation:up .9s .56s both;
 }
-@media(hover:hover){.intro-cta:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(42,28,14,.35);}}
+@media(hover:hover){.intro-cta:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(42,28,14,.18);}}
 .intro-flow-hint{
   font-size:.82rem;letter-spacing:.08em;line-height:1.9;
   color:rgba(106,80,40,.62);text-align:center;
@@ -520,7 +520,7 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
   color:#fff;
   background:linear-gradient(135deg,#3A2A14,#5C4020);
   border:none;padding:12px 28px;border-radius:60px;cursor:pointer;
-  box-shadow:0 4px 14px rgba(42,28,14,.25);
+  box-shadow:0 3px 10px rgba(42,28,14,.12);
   transition:all .28s ease;
   opacity:.35;pointer-events:none;white-space:nowrap;
 }
@@ -930,77 +930,182 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
    REVEALING PAGE (過渡頁)
 ══════════════════════════ */
 #pg-revealing{
-  background:
-    radial-gradient(ellipse at 50% 45%, rgba(235,210,170,.45) 0%, rgba(225,200,155,.2) 30%, transparent 60%),
-    radial-gradient(ellipse at 45% 50%, rgba(220,190,140,.15) 0%, transparent 50%),
-    #FAF7F2;
+  background:#FBF8F3;
   justify-content:center;
+  overflow:hidden;
 }
 .revealing-inner{
   display:flex;flex-direction:column;align-items:center;
   text-align:center;gap:0;
+  position:relative;z-index:2;
+}
+/* 全螢幕暈染背景層 */
+.rev-bg{
+  position:absolute;top:0;left:0;right:0;bottom:0;z-index:0;
+  overflow:hidden;
+}
+/* 中心主光暈 - 明亮奶金 */
+.rev-halo{
+  position:absolute;border-radius:50%;
+  top:42%;left:50%;
+  width:500px;height:500px;
+  transform:translate(-50%,-50%) scale(0);
+  background:radial-gradient(circle,
+    rgba(255,240,205,.85) 0%,
+    rgba(252,230,190,.55) 20%,
+    rgba(245,220,172,.28) 45%,
+    transparent 70%);
+  animation:haloSpread 3.5s .2s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+@keyframes haloSpread{
+  0%{transform:translate(-50%,-50%) scale(0);opacity:0}
+  30%{opacity:.6}
+  60%{transform:translate(-50%,-50%) scale(.75);opacity:.85}
+  100%{transform:translate(-50%,-50%) scale(1);opacity:1}
+}
+/* 上方暖粉光暈 */
+.rev-bloom-1{
+  position:absolute;border-radius:50%;
+  top:34%;left:38%;
+  width:320px;height:320px;
+  transform:translate(-50%,-50%) scale(0);
+  background:radial-gradient(circle,
+    rgba(255,215,180,.55) 0%,
+    rgba(252,200,165,.25) 35%,
+    transparent 68%);
+  animation:bloomIn 3s .6s ease-out forwards;
+}
+/* 右下杏色光暈 */
+.rev-bloom-2{
+  position:absolute;border-radius:50%;
+  top:48%;left:62%;
+  width:340px;height:340px;
+  transform:translate(-50%,-50%) scale(0);
+  background:radial-gradient(circle,
+    rgba(252,228,195,.5) 0%,
+    rgba(248,218,175,.25) 35%,
+    transparent 65%);
+  animation:bloomIn 3.2s .9s ease-out forwards;
+}
+/* 左下淡金光暈 */
+.rev-bloom-3{
+  position:absolute;border-radius:50%;
+  top:50%;left:36%;
+  width:280px;height:280px;
+  transform:translate(-50%,-50%) scale(0);
+  background:radial-gradient(circle,
+    rgba(248,222,175,.45) 0%,
+    rgba(242,212,158,.18) 40%,
+    transparent 68%);
+  animation:bloomIn 2.8s 1.3s ease-out forwards;
+}
+@keyframes bloomIn{
+  0%{transform:translate(-50%,-50%) scale(0);opacity:0}
+  40%{opacity:.5}
+  70%{transform:translate(-50%,-50%) scale(.85);opacity:.8}
+  100%{transform:translate(-50%,-50%) scale(1);opacity:1}
+}
+/* 呼吸脈動光圈 */
+.rev-breathe{
+  position:absolute;border-radius:50%;
+  top:46%;left:50%;
+  width:220px;height:220px;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,
+    rgba(255,242,215,.35) 0%,
+    rgba(248,230,195,.12) 50%,
+    transparent 70%);
+  animation:breathe 3s 1.5s ease-in-out infinite;
+}
+@keyframes breathe{
+  0%,100%{transform:translate(-50%,-50%) scale(.8);opacity:.3}
+  50%{transform:translate(-50%,-50%) scale(1.4);opacity:.7}
+}
+/* 暈染漂移 - 緩慢飄動的光斑 */
+.rev-drift-1{
+  position:absolute;border-radius:50%;
+  top:32%;left:55%;
+  width:160px;height:160px;
+  background:radial-gradient(circle,
+    rgba(255,228,195,.25) 0%,
+    transparent 65%);
+  opacity:.4;
+  animation:drift1 8s 2s ease-in-out infinite;
+}
+.rev-drift-2{
+  position:absolute;border-radius:50%;
+  top:50%;left:40%;
+  width:140px;height:140px;
+  background:radial-gradient(circle,
+    rgba(252,235,205,.2) 0%,
+    transparent 65%);
+  opacity:.3;
+  animation:drift1 9s 2.5s ease-in-out infinite reverse;
+}
+@keyframes drift1{
+  0%,100%{transform:translate(0,0)}
+  50%{transform:translate(12px,-12px)}
+}
+/* 額外色彩層次 - 蜜桃 */
+.rev-bloom-4{
+  position:absolute;border-radius:50%;
+  top:38%;left:28%;
+  width:240px;height:240px;
+  transform:translate(-50%,-50%) scale(0);
+  background:radial-gradient(circle,
+    rgba(255,205,175,.45) 0%,
+    rgba(252,195,160,.15) 40%,
+    transparent 68%);
+  animation:bloomIn 3s 1.6s ease-out forwards;
+}
+/* 額外色彩層次 - 香檳金 */
+.rev-bloom-5{
+  position:absolute;border-radius:50%;
+  top:28%;left:60%;
+  width:220px;height:220px;
+  transform:translate(-50%,-50%) scale(0);
+  background:radial-gradient(circle,
+    rgba(255,235,200,.45) 0%,
+    rgba(250,225,185,.18) 40%,
+    transparent 68%);
+  animation:bloomIn 2.6s 2s ease-out forwards;
+}
+/* 額外色彩層次 - 暖粉光 */
+.rev-bloom-6{
+  position:absolute;border-radius:50%;
+  top:55%;left:52%;
+  width:300px;height:300px;
+  transform:translate(-50%,-50%) scale(0);
+  background:radial-gradient(circle,
+    rgba(255,218,198,.32) 0%,
+    rgba(252,208,182,.12) 40%,
+    transparent 65%);
+  animation:bloomIn 3.4s 1.8s ease-out forwards;
+}
+/* 外圈柔光環 */
+.rev-ring-soft{
+  position:absolute;border-radius:50%;
+  top:42%;left:50%;
+  width:340px;height:340px;
+  transform:translate(-50%,-50%) scale(0);
+  border:1px solid rgba(240,215,170,.2);
+  animation:ringSoft 4s .5s ease-out forwards;
+}
+.rev-ring-soft-2{
+  position:absolute;border-radius:50%;
+  top:42%;left:50%;
+  width:480px;height:480px;
+  transform:translate(-50%,-50%) scale(0);
+  border:1px solid rgba(240,215,170,.1);
+  animation:ringSoft 4.5s 1s ease-out forwards;
+}
+@keyframes ringSoft{
+  0%{transform:translate(-50%,-50%) scale(0);opacity:0}
+  50%{opacity:1}
+  100%{transform:translate(-50%,-50%) scale(1);opacity:0}
 }
 .revealing-color-orbs{
-  position:relative;width:300px;height:300px;margin-bottom:24px;
-}
-.rev-glow-a,.rev-glow-b,.rev-glow-c{
-  position:absolute;border-radius:50%;
-  opacity:0;
-}
-.rev-glow-a{
-  width:280px;height:280px;
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  background:radial-gradient(circle,
-    rgba(228,195,130,.4) 0%,
-    rgba(218,185,120,.2) 35%,
-    transparent 70%);
-  animation:glowA 3s ease-out forwards;
-}
-.rev-glow-b{
-  width:200px;height:200px;
-  top:40%;left:42%;transform:translate(-50%,-50%);
-  background:radial-gradient(circle,
-    rgba(240,210,160,.35) 0%,
-    rgba(230,200,145,.15) 40%,
-    transparent 70%);
-  animation:glowB 3s .4s ease-out forwards;
-}
-.rev-glow-c{
-  width:220px;height:220px;
-  top:55%;left:56%;transform:translate(-50%,-50%);
-  background:radial-gradient(circle,
-    rgba(215,175,110,.3) 0%,
-    rgba(200,165,100,.12) 40%,
-    transparent 70%);
-  animation:glowC 3s .8s ease-out forwards;
-}
-@keyframes glowA{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}
-  50%{opacity:.7;transform:translate(-50%,-50%) scale(.8)}
-  100%{opacity:.9;transform:translate(-50%,-50%) scale(1)}
-}
-@keyframes glowB{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
-  50%{opacity:.6;transform:translate(-50%,-50%) scale(.75)}
-  100%{opacity:.85;transform:translate(-50%,-50%) scale(1)}
-}
-@keyframes glowC{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
-  50%{opacity:.5;transform:translate(-50%,-50%) scale(.7)}
-  100%{opacity:.8;transform:translate(-50%,-50%) scale(1)}
-}
-.rev-pulse{
-  position:absolute;border-radius:50%;
-  width:160px;height:160px;
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  background:radial-gradient(circle,
-    rgba(235,205,150,.25) 0%,
-    transparent 65%);
-  animation:glowPulse 2.8s 1.2s ease-in-out infinite;
-}
-@keyframes glowPulse{
-  0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(.9)}
-  50%{opacity:.8;transform:translate(-50%,-50%) scale(1.3)}
+  position:relative;width:1px;height:1px;margin-bottom:0;z-index:2;
 }
 .revealing-text{
   font-family:'Noto Serif TC',serif;font-size:1rem;font-weight:400;
@@ -1090,13 +1195,50 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
   font-size:.8rem;color:rgba(184,144,74,.35);
   padding-bottom:14px;
 }
-.reveal-text{
-  font-family:'Noto Serif TC',serif;font-size:.82rem;font-weight:400;
-  letter-spacing:.04em;line-height:1.95;
-  color:rgba(42,28,14,.82);
-  border-top:1px solid rgba(184,144,74,.1);
-  padding-top:12px;margin-top:2px;
+.reveal-type-name{
+  font-family:'Noto Serif TC',serif;font-size:1.05rem;font-weight:500;
+  letter-spacing:.18em;color:#3A2A14;
+  margin:10px 0 4px;
+  opacity:0;
 }
+.reveal-p-section{opacity:0;}
+.reveal-hook{opacity:0;}
+.reveal-personality{
+  display:flex;flex-direction:column;gap:12px;
+  margin-top:10px;text-align:left;
+}
+.reveal-p-section{
+  border-top:1px solid rgba(184,144,74,.1);
+  padding-top:10px;
+}
+.reveal-p-label{
+  font-family:'EB Garamond',serif;font-size:.52rem;font-weight:400;
+  letter-spacing:.35em;color:rgba(184,144,74,.5);
+  text-transform:uppercase;margin-bottom:5px;
+}
+.reveal-p-text{
+  font-family:'Noto Serif TC',serif;font-size:.75rem;font-weight:300;
+  letter-spacing:.03em;line-height:1.85;
+  color:rgba(42,28,14,.72);
+}
+.reveal-hook{
+  font-family:'Noto Serif TC',serif;font-size:.68rem;font-weight:300;
+  letter-spacing:.04em;line-height:1.9;
+  color:rgba(106,80,40,.48);font-style:italic;
+  margin-top:12px;text-align:center;
+  padding-top:10px;
+  border-top:1px solid rgba(184,144,74,.08);
+}
+.reveal-share-btn{
+  display:block;width:100%;
+  font-family:'Noto Serif TC',serif;font-size:.7rem;letter-spacing:.15em;
+  color:#3A2A14;
+  background:rgba(184,144,74,.1);
+  border:1px solid rgba(184,144,74,.35);
+  padding:11px 28px;border-radius:60px;cursor:pointer;
+  transition:all .28s;
+}
+@media(hover:hover){.reveal-share-btn:hover{background:rgba(184,144,74,.18);transform:translateY(-1px);}}
 .reveal-btn-group{
   display:flex;flex-direction:column;gap:8px;width:100%;
 }
@@ -1138,8 +1280,12 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
 #pg-reveal.active .reveal-arrow{opacity:0;animation:arrowFadeIn .5s both;}
 #pg-reveal.active .reveal-colors>:nth-child(2){animation-delay:1.1s;}
 #pg-reveal.active .reveal-colors>:nth-child(4){animation-delay:1.4s;}
-#pg-reveal.active .reveal-text{animation:revealTextAppear 1.2s 1.6s both;}
-#pg-reveal.active .reveal-btn-group{animation:revealFadeUp .6s 2s both;}
+#pg-reveal.active .reveal-type-name{animation:revealFadeUp .8s 1.5s both;}
+#pg-reveal.active .reveal-p-section:nth-child(1){animation:revealFadeUp .8s 1.7s both;}
+#pg-reveal.active .reveal-p-section:nth-child(2){animation:revealFadeUp .8s 2s both;}
+#pg-reveal.active .reveal-p-section:nth-child(3){animation:revealFadeUp .8s 2.3s both;}
+#pg-reveal.active .reveal-hook{animation:revealTextAppear 1.2s 2.6s both;}
+#pg-reveal.active .reveal-btn-group{animation:revealFadeUp .6s 3s both;}
 
 @keyframes revealFadeUp{
   from{opacity:0;transform:translateY(14px)}
@@ -1411,13 +1557,22 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
      REVEALING PAGE (過渡頁)
 ══════════════════════════ -->
 <div class="page" id="pg-revealing">
+  <div class="rev-bg" id="revealingOrbs">
+    <div class="rev-halo"></div>
+    <div class="rev-bloom-1"></div>
+    <div class="rev-bloom-2"></div>
+    <div class="rev-bloom-3"></div>
+    <div class="rev-breathe"></div>
+    <div class="rev-drift-1"></div>
+    <div class="rev-drift-2"></div>
+    <div class="rev-bloom-4"></div>
+    <div class="rev-bloom-5"></div>
+    <div class="rev-bloom-6"></div>
+    <div class="rev-ring-soft"></div>
+    <div class="rev-ring-soft-2"></div>
+  </div>
   <div class="revealing-inner">
-    <div class="revealing-color-orbs" id="revealingOrbs">
-      <div class="rev-glow-a"></div>
-      <div class="rev-glow-b"></div>
-      <div class="rev-glow-c"></div>
-      <div class="rev-pulse"></div>
-    </div>
+    <div class="revealing-color-orbs"></div>
     <div class="revealing-text">
       品牌色彩<br>顯影中
     </div>
@@ -1437,9 +1592,25 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
     <div class="reveal-line"></div>
     <div class="reveal-diag-block">
       <div class="reveal-colors" id="revealColors"></div>
-      <div class="reveal-text" id="revealText"></div>
+      <div class="reveal-type-name" id="revealTypeName"></div>
+      <div class="reveal-personality" id="revealPersonality">
+        <div class="reveal-p-section">
+          <div class="reveal-p-label">Brand Vibe</div>
+          <div class="reveal-p-text" id="revealVibe"></div>
+        </div>
+        <div class="reveal-p-section">
+          <div class="reveal-p-label">Your Strength</div>
+          <div class="reveal-p-text" id="revealStrength"></div>
+        </div>
+        <div class="reveal-p-section">
+          <div class="reveal-p-label">The Gap</div>
+          <div class="reveal-p-text" id="revealGap"></div>
+        </div>
+      </div>
+      <div class="reveal-hook" id="revealHook"></div>
     </div>
     <div class="reveal-btn-group">
+      <button class="reveal-share-btn" onclick="shareStory()">分享到限動</button>
       <button class="reveal-continue-btn" onclick="goToSnapFromReveal()">查看完整色彩快照</button>
       <button class="reveal-back-btn" onclick="restartFlow()">重新選色</button>
     </div>
@@ -1849,8 +2020,21 @@ function renderRevealPage(){
       var arrow=gi<2?'<div class="reveal-arrow">&#8594;</div>':'';
       return '<div class="reveal-group"><div class="reveal-swatches">'+swatches+'</div><div class="reveal-label">'+g.label+'</div></div>'+arrow;
     }).join('');
-    var revealText=document.getElementById('revealText');
-    if(revealText) revealText.textContent=generateDiagnosis(sel);
+    var diagJSON=generateDiagnosis(sel);
+    try{
+      var d=JSON.parse(diagJSON);
+      var tn=document.getElementById('revealTypeName');
+      if(tn) tn.textContent=d.typeName;
+      var rv=document.getElementById('revealVibe');
+      if(rv) rv.textContent=d.vibe;
+      var rs=document.getElementById('revealStrength');
+      if(rs) rs.textContent=d.strength;
+      var rg=document.getElementById('revealGap');
+      if(rg) rg.textContent=d.gap;
+      var rh=document.getElementById('revealHook');
+      if(rh) rh.textContent=d.hook;
+      window._lastDiag=d;
+    }catch(e){ console.warn('diag parse error',e); }
   }catch(e){ console.warn('renderRevealPage error:',e); }
 }
 
@@ -2032,21 +2216,73 @@ function generateDiagnosis(sel){
   const t1=getDominantTone(sel.r1);
   const t2=getDominantTone(sel.r2);
   const t3=getDominantTone(sel.r3);
-  const label={
-    warm:'溫暖活力',gold:'豐盛穩健',green:'自然成長',
-    teal:'清透沉靜',blue:'深邃可信',purple:'獨特神秘',neutral:'輕盈留白'
+
+  const personality={
+    warm:{
+      name:'溫暖共鳴型',
+      vibe:'你的品牌底色帶著一股天然的暖意，像午後灑進咖啡廳的那道光。人們在你的頁面上停留，不是因為被說服，而是因為被溫暖到了。',
+      strength:'你天生擅長用真誠打動人，你的受眾買的不是產品，是那份「被懂了」的感覺。'
+    },
+    gold:{
+      name:'質感沉穩型',
+      vibe:'你的品牌散發一種不急不躁的自信，像一間不需要招牌就有人排隊的店。品質感是你的底氣，每一個細節都在替你說話。',
+      strength:'你不需要大聲，存在本身就是說服力。你的受眾是那些懂得分辨好東西的人。'
+    },
+    green:{
+      name:'自然生長型',
+      vibe:'你的品牌像一棵安靜長大的樹，不焦慮、不比較，按照自己的節奏往上長。人們被你吸引，是因為在你身上看到了一種從容。',
+      strength:'你最大的優勢是真實。當別人都在包裝的時候，你的不造作反而成了最稀有的品牌資產。'
+    },
+    teal:{
+      name:'清透洞察型',
+      vibe:'你的品牌有一種乾淨的穿透力，像一面很清澈的湖，看起來安靜，但深度超乎想像。人們信任你，因為你看事情的角度總是很清醒。',
+      strength:'你的專業感不是裝出來的，而是那種「她真的懂」的說服力。你的受眾需要的不是熱鬧，是方向。'
+    },
+    blue:{
+      name:'深邃可信型',
+      vibe:'你的品牌帶著一種沉穩的重量感，像深海的藍，讓人覺得安心。不是因為你說了多少，而是因為你說的每一句都有份量。',
+      strength:'信任是你最強的貨幣。你的受眾在做重要決定前會想到你，因為你代表的是「不會出錯」的安全感。'
+    },
+    purple:{
+      name:'獨特魅力型',
+      vibe:'你的品牌有一種讓人忍不住多看兩眼的神秘感，像一本封面很美但你猜不到內容的書。你不走常規路線，這正是你的魅力所在。',
+      strength:'你天生就不適合模仿別人，你的受眾被你吸引，正是因為你身上那股「只有她才有」的氣質。'
+    },
+    neutral:{
+      name:'留白呼吸型',
+      vibe:'你的品牌像一個很會留白的設計師，懂得什麼時候不說話。那些空間不是空的，是你刻意留給對方感受的餘韻。',
+      strength:'你的品牌最珍貴的是那份從容的呼吸感。當所有人都在搶注意力的時候，你的安靜反而讓人停下來。'
+    }
   };
+
+  const gap={
+    same:'你從內到外是一致的，這份清晰很珍貴。但一致有時也意味著舒適圈——你的品牌視覺是真的到位了，還是只是還沒嘗試其他可能性？',
+    r1r2_diff3:'你和品牌現狀很合拍，但你心裡想走的方向不一樣。這個拉力很有意思——它可能是下一階段品牌進化的起點。',
+    r1r3_diff2:'你知道自己要什麼，但現在的品牌還沒跟上。好消息是方向很清楚，缺的只是那臨門一腳的視覺翻新。',
+    r2r3_diff1:'品牌現在的方向和你想去的地方是一致的，但和真實的你有一段距離。這段距離是策略性的選擇，還是一個值得重新思考的缺口？',
+    allDiff:'三組色彩走向完全不同，這不是混亂，是你正站在一個轉折點上。你內心、品牌現狀、理想方向各自在說不同的話——有趣的是，哪一個才是真正的你？'
+  };
+
+  const p1=personality[t1]||personality.neutral;
   const allSame=t1===t2&&t2===t3;
   const r1r2=t1===t2, r2r3=t2===t3, r1r3=t1===t3;
-  if(allSame)
-    return `你的三組選色都帶著「${label[t1]}」的氣質——是你已經很清楚自己的品牌方向了，還是有些可能性還沒被探索到呢？`;
-  if(r1r2&&!r2r3)
-    return `你這個人和你的品牌現狀很接近，但你想去的方向帶著「${label[t3]}」的能量——是什麼讓你想往那個方向走？`;
-  if(!r1r2&&r1r3)
-    return `你想要的品牌方向和你本來的樣子很相近，但現在的品牌好像還沒跟上——是什麼讓目前的視覺還沒完全表達出你呢？`;
-  if(!r1r2&&r2r3)
-    return `你的品牌現狀和你想要的方向是一致的，但跟你這個人有些距離——這個落差是有意保留的，還是還沒機會去調整呢？`;
-  return `你的三組選色走向都不一樣，這通常代表你正在一個很有意思的轉折點——你最好奇的，是哪一個方向的故事？`;
+
+  let gapText;
+  if(allSame) gapText=gap.same;
+  else if(r1r2&&!r2r3) gapText=gap.r1r2_diff3;
+  else if(!r1r2&&r1r3) gapText=gap.r1r3_diff2;
+  else if(!r1r2&&r2r3) gapText=gap.r2r3_diff1;
+  else gapText=gap.allDiff;
+
+  const hook='色彩只是入口，你的品牌真正需要的，是把這份氣質變成別人「看得見」的視覺語言——而這件事，光靠色票是做不到的。';
+
+  return JSON.stringify({
+    typeName: p1.name,
+    vibe: p1.vibe,
+    strength: p1.strength,
+    gap: gapText,
+    hook: hook
+  });
 }
 function renderDiagnosis(){
   try{
@@ -2069,7 +2305,14 @@ function renderDiagnosis(){
     }).join('');
     // text
     const diagText=document.getElementById('diagText');
-    if(diagText) diagText.textContent=generateDiagnosis(sel);
+    if(diagText){
+      try{
+        const d=JSON.parse(generateDiagnosis(sel));
+        diagText.textContent=d.vibe;
+      }catch(e){
+        diagText.textContent='';
+      }
+    }
     // bio photo
     const servicePhoto=document.querySelector('#pg-service .hannah-photo img');
     const snapImg=document.getElementById('snapBioImg');
@@ -2165,6 +2408,210 @@ function goToService(){
   history.push('pg-service');
   goTo('pg-service');
   document.getElementById('pg-service').scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════
+// SHARE STORY (IG Story 9:16 Canvas)
+// ═══════════════════════════════════════
+async function shareStory(){
+  showToast('生成限動圖片中...');
+  try{ await document.fonts.ready; }catch(e){}
+
+  const W=1080, H=1920;
+  const cv=document.createElement('canvas');
+  cv.width=W; cv.height=H;
+  const ctx=cv.getContext('2d');
+
+  // Background gradient
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#FAF7F2');
+  bg.addColorStop(0.5,'#F5EDE0');
+  bg.addColorStop(1,'#EDE3D2');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // Subtle warm glow
+  const glow=ctx.createRadialGradient(W/2,H*0.38,0,W/2,H*0.38,500);
+  glow.addColorStop(0,'rgba(228,200,150,.15)');
+  glow.addColorStop(1,'rgba(228,200,150,0)');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,W,H);
+
+  // Grain texture
+  try{
+    const gd=ctx.createImageData(W,H); const ga=gd.data;
+    for(let i=0;i<ga.length;i+=4)
+      if(Math.random()>.65){ga[i]=120;ga[i+1]=90;ga[i+2]=50;ga[i+3]=3;}
+    ctx.putImageData(gd,0,0);
+  }catch(e){}
+
+  ctx.textAlign='center';
+
+  // Top eyebrow
+  ctx.font='300 24px "EB Garamond",serif';
+  ctx.fillStyle='rgba(184,144,74,0.5)';
+  ctx.fillText('BRAND COLOR REVEAL', W/2, 180);
+
+  // Title
+  ctx.font='500 64px "Noto Serif TC",serif';
+  ctx.fillStyle='#3A2A14';
+  ctx.fillText('品牌色彩顯影', W/2, 268);
+
+  // Gold line
+  const gl=ctx.createLinearGradient(W*0.3,300,W*0.7,300);
+  gl.addColorStop(0,'rgba(184,144,74,0)');
+  gl.addColorStop(0.3,'rgba(184,144,74,0.4)');
+  gl.addColorStop(0.7,'rgba(184,144,74,0.4)');
+  gl.addColorStop(1,'rgba(184,144,74,0)');
+  ctx.strokeStyle=gl; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(W*0.3,310); ctx.lineTo(W*0.7,310); ctx.stroke();
+
+  // Color swatches row
+  const groups=[{key:'r1',label:'現在的你'},{key:'r2',label:'品牌現狀'},{key:'r3',label:'品牌方向'}];
+  const swH=120, swW=55, swGap=8, grpGap=50;
+  const totalGrpW=(swW*2+swGap)*3+grpGap*2;
+  const startX=(W-totalGrpW)/2;
+  const swY=370;
+
+  function rr(c,x,y,w,h,r){
+    c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);
+    c.arcTo(x+w,y,x+w,y+r,r);c.lineTo(x+w,y+h-r);
+    c.arcTo(x+w,y+h,x+w-r,y+h,r);c.lineTo(x+r,y+h);
+    c.arcTo(x,y+h,x,y+h-r,r);c.lineTo(x,y+r);
+    c.arcTo(x,y,x+r,y,r);c.closePath();
+  }
+
+  groups.forEach(function(g,gi){
+    var ids=sel[g.key];
+    var colors=ids.map(function(id){return BRAND_COLORS.find(function(x){return x.id===id;});}).filter(Boolean);
+    var gx=startX+gi*((swW*2+swGap)+grpGap);
+
+    // Label
+    ctx.font='300 20px "EB Garamond",serif';
+    ctx.fillStyle='rgba(184,144,74,0.55)';
+    ctx.textAlign='center';
+    ctx.fillText(g.label, gx+(swW*2+swGap)/2, swY-14);
+
+    colors.forEach(function(c,ci){
+      var sx=gx+ci*(swW+swGap);
+      var grad=ctx.createLinearGradient(sx,swY,sx,swY+swH);
+      grad.addColorStop(0,c.bg[0]); grad.addColorStop(1,c.bg[1]);
+      rr(ctx,sx,swY,swW,swH,12);
+      ctx.fillStyle=grad; ctx.fill();
+      // Shine
+      var shine=ctx.createRadialGradient(sx+swW*0.38,swY+swH*0.28,0,sx+swW*0.38,swY+swH*0.28,swW*0.6);
+      shine.addColorStop(0,'rgba(255,255,255,0.25)');
+      shine.addColorStop(1,'rgba(255,255,255,0)');
+      rr(ctx,sx,swY,swW,swH,12);
+      ctx.fillStyle=shine; ctx.fill();
+    });
+
+    // Arrow between groups
+    if(gi<2){
+      ctx.font='300 24px "EB Garamond",serif';
+      ctx.fillStyle='rgba(184,144,74,0.3)';
+      ctx.textAlign='center';
+      ctx.fillText('\u2192', gx+swW*2+swGap+(grpGap/2), swY+swH/2+6);
+    }
+  });
+
+  // Type name
+  var diag=window._lastDiag||{};
+  var typeY=560;
+  ctx.textAlign='center';
+  ctx.font='500 48px "Noto Serif TC",serif';
+  ctx.fillStyle='#3A2A14';
+  ctx.fillText(diag.typeName||'', W/2, typeY);
+
+  // Personality text - wrap function
+  function wrapText(text,x,y,maxW,lineH,font,color){
+    ctx.font=font;
+    ctx.fillStyle=color;
+    ctx.textAlign='left';
+    var chars=text.split('');
+    var line='';
+    var curY=y;
+    chars.forEach(function(ch){
+      var test=line+ch;
+      if(ctx.measureText(test).width>maxW){
+        ctx.fillText(line,x,curY);
+        line=ch;
+        curY+=lineH;
+      } else { line=test; }
+    });
+    if(line) ctx.fillText(line,x,curY);
+    return curY+lineH;
+  }
+
+  var textX=120, maxTW=W-240;
+  var curY=typeY+50;
+
+  // Vibe section
+  ctx.font='300 20px "EB Garamond",serif';
+  ctx.fillStyle='rgba(184,144,74,0.5)';
+  ctx.textAlign='left';
+  ctx.fillText('BRAND VIBE', textX, curY);
+  curY+=12;
+  curY=wrapText(diag.vibe||'', textX, curY+28, maxTW, 44, '300 28px "Noto Serif TC",serif', 'rgba(42,28,14,0.72)');
+
+  // Strength section
+  curY+=16;
+  ctx.font='300 20px "EB Garamond",serif';
+  ctx.fillStyle='rgba(184,144,74,0.5)';
+  ctx.textAlign='left';
+  ctx.fillText('YOUR STRENGTH', textX, curY);
+  curY+=12;
+  curY=wrapText(diag.strength||'', textX, curY+28, maxTW, 44, '300 28px "Noto Serif TC",serif', 'rgba(42,28,14,0.72)');
+
+  // Gap section
+  curY+=16;
+  ctx.font='300 20px "EB Garamond",serif';
+  ctx.fillStyle='rgba(184,144,74,0.5)';
+  ctx.textAlign='left';
+  ctx.fillText('THE GAP', textX, curY);
+  curY+=12;
+  curY=wrapText(diag.gap||'', textX, curY+28, maxTW, 44, '300 28px "Noto Serif TC",serif', 'rgba(42,28,14,0.65)');
+
+  // Bottom divider
+  curY+=30;
+  var gl2=ctx.createLinearGradient(W*0.2,curY,W*0.8,curY);
+  gl2.addColorStop(0,'rgba(184,144,74,0)');
+  gl2.addColorStop(0.3,'rgba(184,144,74,0.3)');
+  gl2.addColorStop(0.7,'rgba(184,144,74,0.3)');
+  gl2.addColorStop(1,'rgba(184,144,74,0)');
+  ctx.strokeStyle=gl2; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(W*0.2,curY); ctx.lineTo(W*0.8,curY); ctx.stroke();
+
+  // Hook text
+  curY+=40;
+  ctx.textAlign='center';
+  wrapText(diag.hook||'', textX, curY, maxTW, 42, '300 26px "Noto Serif TC",serif', 'rgba(106,80,40,0.42)');
+
+  // Footer watermark
+  ctx.textAlign='center';
+  ctx.font='300 22px "Noto Serif TC",serif';
+  ctx.fillStyle='rgba(154,138,118,0.3)';
+  ctx.fillText('品牌美感諮詢 . Hannah Chen', W/2, H-120);
+  ctx.font='300 20px "EB Garamond",serif';
+  ctx.fillStyle='rgba(184,144,74,0.35)';
+  ctx.fillText('@hannahchen0505949', W/2, H-86);
+
+  // Export
+  var du=cv.toDataURL('image/png',1.0);
+  var old=document.getElementById('shareOverlay');
+  if(old) old.remove();
+  var ov=document.createElement('div');
+  ov.id='shareOverlay';
+  ov.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;z-index:9000;background:rgba(30,22,14,.95);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;padding:24px 20px 48px;';
+  ov.innerHTML='<div style="font-family:\'Noto Serif TC\',serif;font-size:.78rem;letter-spacing:.1em;color:#fff;margin-bottom:4px;">長按圖片儲存，分享到 IG 限動</div><div style="font-size:.58rem;color:rgba(255,255,255,.35);margin-bottom:16px;letter-spacing:.08em;">品牌色彩顯影</div>';
+  var img=document.createElement('img');
+  img.src=du;
+  img.style.cssText='max-width:100%;width:min(320px,82vw);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.55);-webkit-touch-callout:default;touch-action:auto;user-select:auto;-webkit-user-select:auto;';
+  var closeBtn=document.createElement('button');
+  closeBtn.textContent='關閉';
+  closeBtn.style.cssText='margin-top:20px;font-family:\'Noto Serif TC\',serif;font-size:.62rem;letter-spacing:.3em;color:rgba(255,255,255,.4);background:transparent;border:1px solid rgba(255,255,255,.18);padding:8px 28px;border-radius:60px;cursor:pointer;';
+  closeBtn.onclick=function(){ov.remove();};
+  ov.appendChild(img);
+  ov.appendChild(closeBtn);
+  document.body.appendChild(ov);
 }
 
 // ═══════════════════════════════════════
@@ -2306,22 +2753,22 @@ async function downloadSnap(){
   ctx.fillStyle='rgba(154,138,118,0.32)';
   ctx.fillText('品牌美感諮詢 · Hannah Chen · @hannahchen0505949', W/2, divY+80);
 
-  // CTA block
-  const ctaY = divY + 148;
-  // Soft ornament dots
-  ctx.fillStyle='rgba(184,144,74,0.35)';
-  for(let di=0;di<3;di++){
-    ctx.beginPath();
-    ctx.arc(W/2 + (di-1)*18, ctaY-28, 3, 0, Math.PI*2);
-    ctx.fill();
+  // Personality type name
+  const snapDiag=window._lastDiag||{};
+  const ctaY = divY + 120;
+  if(snapDiag.typeName){
+    ctx.textAlign='center';
+    ctx.font='500 36px "Noto Serif TC",serif';
+    ctx.fillStyle='#3A2A14';
+    ctx.fillText(snapDiag.typeName, W/2, ctaY);
   }
-  ctx.font='300 28px "Noto Serif TC",serif';
-  ctx.fillStyle='rgba(50,35,18,0.52)';
-  ctx.fillText('想更深入了解自己與品牌的現況', W/2, ctaY);
-  ctx.fillText('或找到屬於你的品牌前進方向？', W/2, ctaY+48);
-  ctx.font='400 26px "Noto Serif TC",serif';
-  ctx.fillStyle='rgba(184,144,74,0.78)';
-  ctx.fillText('✦  歡迎預約一對一品牌美感諮詢  ✦', W/2, ctaY+108);
+  // CTA
+  ctx.font='300 24px "Noto Serif TC",serif';
+  ctx.fillStyle='rgba(106,80,40,0.4)';
+  ctx.fillText('色彩只是入口，品牌美感需要被看見', W/2, ctaY+52);
+  ctx.font='400 22px "EB Garamond",serif';
+  ctx.fillStyle='rgba(184,144,74,0.6)';
+  ctx.fillText('@hannahchen0505949', W/2, ctaY+92);
 
   // Download
   const ua=navigator.userAgent||'';

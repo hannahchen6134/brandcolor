@@ -1,0 +1,2375 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>品牌美感諮詢 · Hannah Chen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Serif TC',serif;background:#FAF7F2;color:#5C3D1E;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
+
+/* ── PAGES ── */
+.page{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  display:flex;flex-direction:column;align-items:center;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  opacity:0;pointer-events:none;
+  transition:opacity .45s ease;
+  will-change:opacity;
+}
+.page.active{opacity:1;pointer-events:auto;z-index:1}
+.page.out{opacity:0;pointer-events:none;z-index:0}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;
+  background:rgba(245,240,232,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(184,144,74,.22);
+  box-shadow:0 2px 12px rgba(80,50,20,.07);
+}
+.nav-logo{
+  font-family:'EB Garamond',serif;font-size:.7rem;letter-spacing:.38em;
+  color:rgba(184,144,74,.75);text-transform:uppercase;
+}
+.nav-back{
+  font-family:'Noto Serif TC',serif;font-size:.74rem;letter-spacing:.1em;
+  color:rgba(106,80,40,.5);background:none;border:none;cursor:pointer;
+  padding:6px 4px;display:flex;align-items:center;gap:4px;
+  transition:color .25s;
+}
+@media(hover:hover){.nav-back:hover{color:rgba(184,144,74,.85);}}
+.nav-back.hidden{visibility:hidden}
+.nav-home{
+  font-family:'Noto Serif TC',serif;font-size:.72rem;letter-spacing:.1em;
+  color:rgba(106,80,40,.42);background:none;border:none;cursor:pointer;
+  padding:6px 4px;transition:color .25s;
+}
+@media(hover:hover){.nav-home:hover{color:rgba(184,144,74,.85);}}
+.nav-home.hidden{visibility:hidden}
+
+/* ── GRAIN OVERLAY ── */
+.grain{
+  position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  opacity:.55;
+}
+
+/* ══════════════════════════
+   INTRO PAGE
+══════════════════════════ */
+#pg-intro{
+  justify-content:flex-start;
+  background:
+    radial-gradient(ellipse at 25% 15%, rgba(232,212,180,.7) 0%, transparent 50%),
+    radial-gradient(ellipse at 78% 85%, rgba(220,195,158,.5) 0%, transparent 48%),
+    #FAF7F2;
+}
+.intro-inner{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  padding:100px 32px 80px;
+  max-width:500px;width:100%;
+}
+.intro-eye{
+  font-family:'EB Garamond',serif;font-size:.76rem;letter-spacing:.55em;
+  color:rgba(184,144,74,.65);text-transform:uppercase;
+  margin-bottom:32px;
+  animation:up .9s .1s both;
+}
+.intro-title{
+  font-size:clamp(1.3rem,5.2vw,2rem);font-weight:400;
+  letter-spacing:.03em;line-height:1.3;color:#5C3D1E;
+  white-space:nowrap;
+  margin-bottom:8px;
+  animation:up .9s .2s both;
+}
+.intro-sub{
+  font-size:clamp(.88rem,3.6vw,1.15rem);font-weight:400;
+  letter-spacing:.12em;line-height:1.6;
+  color:rgba(184,144,74,.92);
+  margin-bottom:12px;
+  animation:up .9s .25s both;
+}
+.intro-line{
+  width:36px;height:1px;margin:20px auto;
+  background:linear-gradient(to right,transparent,rgba(184,144,74,.5),transparent);
+  animation:up .9s .3s both;
+}
+/* colour palette visual */
+.intro-palette{
+  display:flex;gap:7px;justify-content:center;align-items:flex-end;
+  margin-bottom:28px;
+  animation:up .9s .38s both;
+}
+.ip-sw{
+  border-radius:60px;
+  box-shadow:0 4px 16px rgba(0,0,0,.13);
+  flex-shrink:0;
+  animation:swFloat 3.2s ease-in-out infinite;
+}
+.ip-sw:nth-child(1){animation-delay:0s;}
+.ip-sw:nth-child(2){animation-delay:.28s;}
+.ip-sw:nth-child(3){animation-delay:.56s;height:52px!important;}
+.ip-sw:nth-child(4){animation-delay:.84s;}
+.ip-sw:nth-child(5){animation-delay:1.12s;}
+.ip-sw:nth-child(6){animation-delay:1.4s;}
+@keyframes swFloat{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-9px);}
+}
+
+/* ── CAROUSEL (snap page) ── */
+.snap-carousel{
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  width:100%;
+  margin-bottom:8px;
+  border-radius:18px;
+  background:#FFFFFF;
+  border:1.5px solid rgba(184,144,74,.2);
+  box-shadow:0 12px 40px rgba(80,50,20,.14), 0 2px 10px rgba(80,50,20,.07), 0 0 0 1px rgba(184,144,74,.08);
+}
+.snap-carousel::-webkit-scrollbar{display:none;}
+.snap-slide{
+  min-width:100%;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:flex;flex-direction:column;align-items:center;
+  padding:24px 16px 22px;gap:14px;box-sizing:border-box;
+}
+.slide-header{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  width:100%;padding-bottom:4px;
+  border-bottom:1px solid rgba(184,144,74,.15);
+  margin-bottom:2px;
+}
+.slide-eyebrow{
+  font-family:'EB Garamond',serif;font-size:.55rem;font-weight:500;letter-spacing:.42em;
+  color:rgba(184,144,74,.5);text-transform:uppercase;
+  animation:slideTextIn .7s .2s both;
+}
+.slide-title{
+  font-family:'Noto Serif TC',serif;font-size:.95rem;font-weight:500;
+  letter-spacing:.16em;color:#5C3D1E;
+  animation:slideTextIn .7s .35s both;
+}
+@keyframes slideTextIn{
+  from{opacity:0;transform:translateY(10px);letter-spacing:.4em}
+  to{opacity:1;transform:translateY(0);letter-spacing:.18em}
+}
+/* 舊 slide-round 保留相容 */
+.slide-round{display:none;}
+/* 每色一橫排 */
+.slide-pair{
+  display:flex;flex-direction:column;gap:18px;width:100%;
+}
+.slide-color-row{
+  display:flex;gap:16px;align-items:flex-start;
+}
+.slide-sw-wrap{
+  flex-shrink:0;width:72px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.slide-sw{
+  width:100%;aspect-ratio:1/1;
+  border-radius:13px;overflow:hidden;position:relative;
+  box-shadow:0 6px 20px rgba(0,0,0,.2);
+  transition:transform .4s ease,box-shadow .4s ease;
+}
+@media(hover:hover){
+  .slide-sw:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 28px rgba(0,0,0,.25);
+  }
+}
+.slide-sw-shine{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(circle at 38% 28%,rgba(255,255,255,.24) 0%,transparent 55%);
+}
+.slide-sw-name{
+  font-family:'Noto Serif TC',serif;font-size:.65rem;font-weight:500;
+  color:rgba(42,28,14,.6);letter-spacing:.06em;text-align:center;
+}
+.slide-text-item{
+  flex:1;display:flex;flex-direction:column;gap:4px;padding-top:5px;
+}
+.slide-text-color{
+  font-family:'Noto Serif TC',serif;font-size:.95rem;font-weight:600;
+  color:#5C3D1E;letter-spacing:.08em;
+}
+.slide-text{
+  font-size:.8rem;line-height:1.8;letter-spacing:.04em;
+  color:rgba(42,28,14,.65);text-align:left;
+  font-weight:400;
+}
+/* snap page CTA */
+.snap-cta-block{
+  width:100%;text-align:center;margin:8px 0 4px;
+  padding:22px 22px;
+  background:linear-gradient(135deg,rgba(184,144,74,.06),rgba(184,144,74,.12),rgba(184,144,74,.06));
+  border:1px solid rgba(184,144,74,.22);
+  border-radius:14px;
+}
+.snap-cta-text{
+  font-size:.78rem;font-weight:400;letter-spacing:.05em;
+  color:rgba(50,35,18,.58);line-height:1.85;
+}
+.snap-cta-em{
+  font-family:'Noto Serif TC',serif;font-size:.72rem;
+  color:rgba(184,144,74,.75);letter-spacing:.08em;
+  display:block;margin-top:5px;
+}
+/* ── DIAGNOSIS BLOCK ── */
+.diag-block{
+  width:100%;margin:20px 0 16px;
+  padding:24px 22px 22px;
+  background:#FFFFFF;
+  border-radius:16px;
+  box-shadow:0 10px 36px rgba(80,50,20,.14), 0 2px 10px rgba(80,50,20,.08);
+  text-align:center;
+  border:1px solid rgba(184,144,74,.18);
+}
+.diag-eyebrow{
+  font-family:'EB Garamond',serif;font-size:.7rem;font-weight:500;letter-spacing:.48em;
+  color:#5C3D1E;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.diag-headline{
+  font-family:'Noto Serif TC',serif;font-size:1.05rem;font-weight:500;
+  letter-spacing:.12em;color:rgba(42,28,14,.85);
+  margin-bottom:14px;
+}
+.diag-colors{
+  display:flex;justify-content:center;align-items:flex-end;gap:6px;
+  margin-bottom:16px;
+}
+.diag-group{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.diag-swatches{
+  display:flex;gap:3px;
+}
+.diag-sw{
+  width:22px;border-radius:6px;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.diag-label{
+  font-size:.58rem;letter-spacing:.12em;
+  color:rgba(106,80,40,.45);
+}
+.diag-arrow{
+  font-size:.9rem;color:rgba(184,144,74,.4);
+  padding-bottom:14px;
+}
+.diag-text{
+  font-family:'Noto Serif TC',serif;font-size:.95rem;font-weight:400;
+  letter-spacing:.06em;line-height:2;
+  color:rgba(42,28,14,.88);
+  border-top:1px solid rgba(184,144,74,.12);
+  padding-top:16px;margin-top:2px;
+}
+/* ── SNAP BIO PREVIEW ── */
+.snap-bio-preview{
+  width:100%;margin:4px 0 12px;
+  padding:16px 18px;
+  display:flex;align-items:center;gap:14px;
+  background:rgba(184,144,74,.05);
+  border:1px solid rgba(184,144,74,.15);
+  border-radius:14px;
+}
+.snap-bio-photo{
+  width:52px;height:52px;border-radius:50%;overflow:hidden;flex-shrink:0;
+  border:1.5px solid rgba(184,144,74,.3);
+}
+.snap-bio-photo img{width:100%;height:100%;object-fit:cover;object-position:center 18%;}
+.snap-bio-info{flex:1;text-align:left;}
+.snap-bio-name{
+  font-family:'Noto Serif TC',serif;font-size:.8rem;font-weight:600;
+  letter-spacing:.15em;color:rgba(42,28,14,.85);margin-bottom:3px;
+}
+.snap-bio-line{
+  font-size:.65rem;letter-spacing:.03em;font-weight:400;
+  color:rgba(106,80,40,.5);line-height:1.65;
+}
+.carousel-dots{
+  display:flex;gap:8px;justify-content:center;margin-bottom:5px;
+}
+.c-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(184,144,74,.2);transition:all .3s;
+}
+.c-dot.active{background:rgba(184,144,74,.85);transform:scale(1.4);}
+.swipe-hint{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:fit-content;margin:0 auto 16px;
+  padding:9px 22px;border-radius:60px;
+  background:rgba(184,144,74,.1);
+  border:1.5px solid rgba(184,144,74,.38);
+  font-family:'Noto Serif TC',serif;font-size:.7rem;letter-spacing:.08em;
+  color:rgba(106,70,20,.55);text-align:center;
+  animation:swipePulse 2.2s ease-in-out infinite;
+}
+@keyframes swipePulse{
+  0%,100%{background:rgba(184,144,74,.09);border-color:rgba(184,144,74,.3);}
+  50%{background:rgba(184,144,74,.18);border-color:rgba(184,144,74,.55);}
+}
+
+/* ── SERVICE PAGE ── */
+#pg-service{background:#FAF7F2;}
+.svc-inner{
+  position:relative;z-index:1;
+  width:100%;max-width:580px;
+  padding:76px 24px 60px;
+}
+.intro-quote{
+  font-size:.92rem;font-weight:400;letter-spacing:.08em;
+  color:rgba(42,28,14,.8);line-height:2;
+  border-left:2px solid rgba(184,144,74,.38);
+  padding:4px 0 4px 16px;text-align:left;
+  margin-bottom:40px;
+  animation:up .9s .46s both;
+}
+.intro-cta{
+  font-family:'Noto Serif TC',serif;font-size:.88rem;letter-spacing:.22em;
+  color:#fff;
+  background:linear-gradient(135deg,#3A2A14 0%,#5C4020 50%,#3A2A14 100%);
+  border:1px solid rgba(184,144,74,.4);
+  padding:14px 48px;border-radius:60px;cursor:pointer;
+  box-shadow:0 8px 28px rgba(42,28,14,.25),0 0 0 0 rgba(184,144,74,.2);
+  transition:all .35s ease;
+  animation:up .9s .56s both;
+}
+@media(hover:hover){.intro-cta:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(42,28,14,.35);}}
+.intro-flow-hint{
+  font-size:.82rem;letter-spacing:.08em;line-height:1.9;
+  color:rgba(106,80,40,.62);text-align:center;
+  margin-bottom:18px;font-weight:400;
+  animation:up .9s .5s both;
+}
+.intro-flow-hint span{color:rgba(184,144,74,.85);}
+.intro-price{
+  margin-top:28px;font-size:.65rem;letter-spacing:.18em;
+  color:rgba(184,144,74,.65);
+  animation:up .9s .64s both;
+}
+.intro-spots-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:10px;
+  background:rgba(184,144,74,.09);border:1px solid rgba(184,144,74,.22);
+  border-radius:20px;padding:5px 14px;
+  font-size:.62rem;letter-spacing:.14em;color:rgba(150,110,50,.8);
+  animation:up .9s .7s both;
+}
+.spots-dot{width:5px;height:5px;border-radius:50%;background:rgba(184,144,74,.7);}
+.intro-ig{
+  margin-top:20px;font-size:.62rem;letter-spacing:.18em;
+  color:rgba(106,80,40,.4);text-decoration:none;
+  transition:color .25s;
+  animation:up .9s .76s both;
+}
+@media(hover:hover){.intro-ig:hover{color:rgba(184,144,74,.8);}}
+
+/* ══════════════════════════
+   ROUND PAGES
+══════════════════════════ */
+.round-page{background:#FAF7F2;}
+
+.round-header{
+  flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;
+  padding:70px 24px 16px;
+  text-align:center;width:100%;max-width:500px;
+}
+.round-label{
+  font-family:'EB Garamond',serif;font-size:.78rem;font-weight:500;letter-spacing:.48em;
+  color:#5C3D1E;text-transform:uppercase;margin-bottom:16px;
+}
+.round-progress{display:flex;gap:10px;align-items:center;margin-bottom:24px;}
+.rp-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(184,144,74,.2);transition:all .4s ease;
+}
+.rp-dot.done{background:rgba(184,144,74,.55);}
+.rp-dot.active{background:rgba(184,144,74,.9);transform:scale(1.35);}
+
+.round-q{
+  font-size:1.18rem;font-weight:400;letter-spacing:.06em;
+  color:#5C3D1E;line-height:1.75;margin-bottom:6px;
+}
+.round-hint{
+  font-size:.8rem;letter-spacing:.14em;
+  color:rgba(42,28,14,.55);margin-bottom:4px;
+}
+.round-sel-count{
+  font-size:.78rem;letter-spacing:.12em;
+  color:rgba(42,28,14,.6);min-height:18px;transition:all .25s;
+}
+
+/* ── COLOR GRID ── */
+/* 選色卡不顯示文字 */
+.c-card-overlay{display:none !important;}
+
+.color-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+  padding:8px 24px 90px;
+  width:100%;max-width:520px;
+  flex-shrink:0;
+}
+@media(max-width:480px){
+  .color-grid{grid-template-columns:repeat(6,1fr);gap:5px;padding:8px 24px 90px;}
+  .intro-quote,.snap-cta-text,.svc-sub,.proof-text,
+  .svc-check-list li,.svc-for-who-list li,.price-includes,
+  .price-includes-list li,.bio-tagline,.book-note{font-weight:400;}
+}
+
+.c-card{
+  aspect-ratio:1/1;border-radius:20px;
+  cursor:pointer;position:relative;overflow:hidden;
+  border:2px solid transparent;
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+.c-card:active{transform:scale(.94);}
+.c-card.selected{
+  border-color:rgba(184,144,74,.9);
+  transform:translateY(-3px) scale(1.06);
+  box-shadow:0 8px 20px rgba(0,0,0,.2),0 0 0 3px rgba(184,144,74,.2);
+}
+.c-card-bg{position:absolute;top:0;left:0;right:0;bottom:0;}
+.c-card-shine{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(circle at 38% 28%,rgba(255,255,255,.28) 0%,transparent 55%);
+}
+.c-card-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:6px 4px;
+  background:linear-gradient(to top,rgba(0,0,0,.45) 0%,transparent 100%);
+}
+.c-card-zh{
+  font-family:'Noto Serif TC',serif;font-size:.5rem;font-weight:400;
+  letter-spacing:.04em;color:rgba(255,255,255,.92);text-align:center;
+  line-height:1.3;
+}
+.c-card-feel{display:none;}
+.c-card-check{
+  position:absolute;top:4px;right:4px;
+  width:15px;height:15px;border-radius:50%;
+  background:rgba(184,144,74,.95);
+  display:flex;align-items:center;justify-content:center;
+  font-size:8px;color:#fff;
+  opacity:0;transform:scale(0) rotate(-45deg);
+  transition:all .22s cubic-bezier(.34,1.56,.64,1);
+}
+.c-card.selected .c-card-check{opacity:1;transform:scale(1) rotate(0deg);}
+
+/* ── ROUND FOOTER ── */
+.round-footer{display:none;}
+
+/* ── 浮動確認列 ── */
+.float-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:300;
+  background:rgba(250,247,242,.96);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid rgba(184,144,74,.18);
+  padding:12px 20px 24px;
+  display:flex;align-items:center;gap:12px;
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.34,1.2,.64,1);
+}
+.float-bar.visible{transform:translateY(0);}
+.float-swatches{
+  display:flex;gap:6px;flex-shrink:0;
+}
+.float-sw{
+  width:34px;height:34px;border-radius:8px;
+  border:1.5px solid rgba(184,144,74,.4);
+  position:relative;overflow:hidden;
+  transition:all .25s ease;
+}
+.float-sw-empty{
+  width:34px;height:34px;border-radius:8px;
+  border:1.5px dashed rgba(184,144,74,.25);
+  background:rgba(184,144,74,.05);
+  flex-shrink:0;
+}
+.float-info{flex:1;min-width:0;}
+.float-count{
+  font-family:'Noto Serif TC',serif;font-size:.82rem;
+  letter-spacing:.1em;color:rgba(42,28,14,.7);
+}
+.float-hint{
+  font-size:.68rem;letter-spacing:.06em;
+  color:rgba(106,80,40,.42);margin-top:2px;
+}
+.float-btn{
+  flex-shrink:0;
+  font-family:'Noto Serif TC',serif;font-size:.82rem;letter-spacing:.16em;
+  color:#fff;
+  background:linear-gradient(135deg,#3A2A14,#5C4020);
+  border:none;padding:12px 28px;border-radius:60px;cursor:pointer;
+  box-shadow:0 4px 14px rgba(42,28,14,.25);
+  transition:all .28s ease;
+  opacity:.35;pointer-events:none;white-space:nowrap;
+}
+.float-btn.ready{opacity:1;pointer-events:auto;}
+.float-btn.ready:active{transform:scale(.96);}
+
+/* ══════════════════════════
+   SNAPSHOT PAGE
+══════════════════════════ */
+#pg-snap{background:#FAF7F2;}
+.snap-inner{
+  position:relative;z-index:1;
+  width:100%;max-width:580px;
+  padding:80px 24px 80px;
+}
+.snap-eyebrow{
+  font-family:'EB Garamond',serif;font-size:.6rem;font-weight:500;letter-spacing:.52em;
+  color:rgba(184,144,74,.55);text-transform:uppercase;
+  text-align:center;margin-bottom:8px;
+}
+.snap-title{
+  font-size:1.25rem;font-weight:500;letter-spacing:.12em;
+  color:#5C3D1E;text-align:center;margin-bottom:4px;
+}
+.snap-sub{
+  font-size:.65rem;letter-spacing:.14em;
+  color:rgba(106,80,40,.38);text-align:center;margin-bottom:24px;
+}
+/* Color snapshot grid */
+.snap-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;margin-bottom:20px;
+}
+.snap-group{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.snap-g-label{
+  font-family:'EB Garamond',serif;font-size:.5rem;letter-spacing:.2em;
+  color:#5C3D1E;text-transform:uppercase;text-align:center;
+}
+.snap-pair{display:flex;gap:5px;width:100%;}
+.snap-sw-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.snap-sw{
+  width:100%;border-radius:8px;aspect-ratio:1/1.4;
+  overflow:hidden;position:relative;
+  box-shadow:0 2px 10px rgba(0,0,0,.16);
+}
+.snap-sw-bg{position:absolute;top:0;left:0;right:0;bottom:0;}
+.snap-sw-shine{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(circle at 40% 30%,rgba(255,255,255,.22) 0%,transparent 55%);
+}
+.snap-sw-name{
+  font-family:'Noto Serif TC',serif;font-size:.58rem;font-weight:400;
+  letter-spacing:.05em;color:rgba(42,28,14,.7);text-align:center;
+  line-height:1.2;
+}
+
+/* Analysis */
+.snap-analysis{
+  margin-bottom:16px;
+  border:1px solid rgba(184,144,74,.15);
+  border-radius:12px;
+  overflow:hidden;
+  background:rgba(255,253,249,.6);
+}
+.analysis-item{
+  padding:13px 16px;
+  border-bottom:1px solid rgba(184,144,74,.09);
+}
+.analysis-item:last-child{border-bottom:none;}
+.anal-round{
+  font-family:'EB Garamond',serif;font-size:.5rem;
+  letter-spacing:.26em;color:#5C3D1E;
+  text-transform:uppercase;margin-bottom:4px;
+}
+.anal-colors{
+  font-size:.78rem;font-weight:400;letter-spacing:.05em;
+  color:#5C3D1E;margin-bottom:3px;
+}
+.anal-text{
+  font-size:.65rem;font-weight:300;letter-spacing:.05em;
+  color:rgba(50,35,18,.5);line-height:1.8;
+  font-style:italic;
+}
+.snap-btn-group{
+  display:flex;flex-direction:column;gap:8px;width:100%;margin-bottom:16px;
+}
+.see-more-btn{
+  display:block;margin:0 auto;width:100%;
+  font-family:'Noto Serif TC',serif;font-size:.72rem;letter-spacing:.15em;
+  color:#fff;
+  background:linear-gradient(135deg,#7A5830,#B8854A);
+  border:none;
+  padding:11px 28px;border-radius:60px;cursor:pointer;
+  box-shadow:0 4px 16px rgba(120,80,30,.25);
+  transition:all .28s;
+}
+@media(hover:hover){.see-more-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(120,80,30,.35);}}
+
+/* Restart button (top of snap page) */
+.restart-btn{
+  display:inline-block;margin:0 auto 20px;
+  font-family:'Noto Serif TC',serif;font-size:.58rem;letter-spacing:.16em;
+  color:rgba(150,110,50,.55);background:rgba(184,144,74,.06);
+  border:1px solid rgba(184,144,74,.2);
+  padding:5px 16px;border-radius:60px;cursor:pointer;
+  transition:all .25s;
+}
+@media(hover:hover){.restart-btn:hover{background:rgba(184,144,74,.12);color:rgba(150,110,50,.85);}}
+
+/* Home button (bottom) */
+.home-btn{
+  display:block;margin:20px auto 0;
+  font-family:'Noto Serif TC',serif;font-size:.6rem;letter-spacing:.15em;
+  color:rgba(150,110,50,.45);background:transparent;border:none;
+  cursor:pointer;padding:8px 0;
+  transition:color .25s;
+}
+@media(hover:hover){.home-btn:hover{color:rgba(184,144,74,.85);}}
+
+/* Download snapshot btn */
+.dl-snap-btn{
+  display:block;margin:0 auto;width:100%;
+  font-family:'Noto Serif TC',serif;font-size:.68rem;letter-spacing:.15em;
+  color:rgba(90,60,20,.85);
+  background:rgba(184,144,74,.15);
+  border:1px solid rgba(184,144,74,.4);
+  padding:11px 28px;border-radius:60px;cursor:pointer;
+  transition:all .28s;
+}
+@media(hover:hover){.dl-snap-btn:hover{background:rgba(184,144,74,.25);}}
+
+/* ── DIVIDER ── */
+.divider{
+  width:100%;height:1px;margin:28px 0;
+  background:linear-gradient(to right,transparent,rgba(184,144,74,.2),transparent);
+}
+
+/* ── PROFILE PHOTO ── */
+.hannah-photo-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  margin-bottom:16px;
+}
+.hannah-photo{
+  width:100px;height:100px;border-radius:50%;overflow:hidden;
+  border:2px solid rgba(184,144,74,.35);
+  box-shadow:0 4px 20px rgba(42,28,14,.15);
+  flex-shrink:0;
+}
+.hannah-photo img{
+  width:100%;height:100%;object-fit:cover;object-position:center 22%;
+  display:block;
+}
+.hannah-name-tag{
+  font-family:'Noto Serif TC',serif;font-size:1.1rem;font-weight:600;
+  letter-spacing:.22em;color:rgba(42,28,14,.88);
+  margin-top:2px;
+}
+.hannah-bio{
+  width:100%;margin-bottom:18px;
+  padding:16px 16px 14px;
+  background:rgba(184,144,74,.05);
+  border:1px solid rgba(184,144,74,.18);
+  border-radius:14px;
+  text-align:center;
+}
+.hannah-bio-quote{
+  font-size:.84rem;font-weight:300;letter-spacing:.06em;
+  color:rgba(42,28,14,.72);line-height:1.8;
+  font-style:italic;margin-bottom:10px;
+}
+.bio-tags{
+  display:flex;flex-wrap:wrap;gap:7px;justify-content:center;
+  margin-bottom:10px;
+}
+.bio-tag{
+  display:flex;align-items:center;gap:5px;
+  padding:6px 13px;border-radius:40px;
+  background:rgba(184,144,74,.1);
+  border:1px solid rgba(184,144,74,.28);
+  font-size:.78rem;letter-spacing:.06em;
+  color:rgba(70,45,15,.75);font-weight:300;
+}
+.bio-tag-icon{
+  font-size:.68rem;color:rgba(184,144,74,.85);
+}
+.bio-tagline{
+  font-size:.78rem;letter-spacing:.07em;
+  color:rgba(106,70,20,.62);font-weight:300;line-height:1.8;
+}
+
+/* ── SERVICE SECTION ── */
+.service-title{
+  font-size:.95rem;font-weight:400;letter-spacing:.1em;
+  color:#5C3D1E;margin-bottom:20px;text-align:center;
+}
+.svc-sub{
+  font-size:.82rem;font-weight:300;letter-spacing:.06em;
+  color:rgba(106,80,40,.5);line-height:1.8;margin-bottom:16px;
+  font-style:italic;text-align:center;
+}
+.svc-check-list{
+  list-style:none;display:flex;flex-direction:column;gap:10px;
+  width:100%;margin-bottom:10px;
+}
+.svc-check-list li{
+  display:flex;gap:12px;align-items:flex-start;
+  font-size:.9rem;font-weight:300;letter-spacing:.04em;
+  color:rgba(50,35,18,.7);line-height:1.72;
+}
+.svc-check{
+  flex-shrink:0;color:rgba(184,144,74,.85);font-size:.72rem;
+  margin-top:4px;
+}
+.svc-check-list li strong{font-weight:500;color:rgba(42,28,14,.85);}
+.svc-for-who{
+  width:100%;margin-bottom:16px;
+  padding:14px 16px;
+  background:rgba(184,144,74,.05);
+  border:1px solid rgba(184,144,74,.18);
+  border-radius:12px;
+}
+.svc-for-who-title{
+  font-size:.68rem;letter-spacing:.28em;color:#5C3D1E;
+  text-transform:uppercase;margin-bottom:10px;text-align:center;
+  font-family:'EB Garamond',serif;
+}
+.svc-for-who-list{
+  list-style:none;display:flex;flex-direction:column;gap:7px;
+}
+.svc-for-who-list li{
+  font-size:.82rem;font-weight:300;letter-spacing:.04em;
+  color:rgba(50,35,18,.68);line-height:1.65;
+  display:flex;gap:8px;align-items:flex-start;
+}
+.svc-for-who-list li::before{
+  content:'·';color:rgba(184,144,74,.7);flex-shrink:0;margin-top:1px;
+}
+.svc-addon{
+  font-size:.78rem;font-weight:300;letter-spacing:.08em;
+  color:rgba(106,80,40,.48);text-align:center;
+  padding:8px 0;margin-bottom:14px;
+  border-top:1px solid rgba(184,144,74,.14);
+  border-bottom:1px solid rgba(184,144,74,.14);
+}
+.s-text strong{font-weight:400;color:rgba(42,28,14,.85);}
+.service-plus{
+  display:none;
+  border-left:2px solid rgba(184,144,74,.28);
+  padding-left:14px;margin:8px 0 24px;
+}
+
+/* ── PRICE CARD ── */
+.price-card{
+  background:#FFFFFF;
+  border:none;
+  border-radius:16px;padding:20px 24px 16px;
+  display:flex;flex-direction:column;gap:12px;
+  margin-bottom:24px;
+  box-shadow:0 8px 32px rgba(80,50,20,.13), 0 2px 8px rgba(80,50,20,.07);
+}
+.price-card-top{
+  display:flex;align-items:center;justify-content:space-between;
+}
+.price-includes{
+  font-size:.8rem;letter-spacing:.05em;line-height:2;
+  color:rgba(70,50,20,.68);font-weight:300;
+  border-top:1px solid rgba(184,144,74,.18);
+  padding-top:12px;
+}
+.price-includes-list{
+  list-style:none;display:flex;flex-direction:column;gap:6px;
+  margin-top:6px;
+}
+.price-includes-list li{
+  display:flex;align-items:center;gap:8px;
+  font-size:.78rem;letter-spacing:.04em;
+  color:rgba(70,50,20,.65);font-weight:300;
+}
+.price-includes-list li::before{
+  content:'✓';color:rgba(184,144,74,.8);font-size:.7rem;flex-shrink:0;
+}
+/* ── SOCIAL PROOF ── */
+.social-proof{
+  width:100%;margin-bottom:20px;
+}
+.social-proof-title{
+  font-family:'EB Garamond',serif;font-size:.66rem;letter-spacing:.36em;
+  color:#5C3D1E;text-transform:uppercase;
+  text-align:center;margin-bottom:14px;
+}
+.proof-card{
+  background:rgba(184,144,74,.04);
+  border:1px solid rgba(184,144,74,.15);
+  border-radius:12px;
+  padding:14px 16px;margin-bottom:10px;
+}
+.proof-text{
+  font-size:.82rem;font-weight:300;font-style:italic;
+  letter-spacing:.04em;line-height:1.8;
+  color:rgba(42,28,14,.68);margin-bottom:6px;
+}
+.proof-author{
+  font-size:.68rem;letter-spacing:.1em;
+  color:rgba(106,80,40,.48);text-align:right;
+}
+.book-note{
+  font-size:.72rem;letter-spacing:.06em;
+  color:rgba(106,80,40,.45);text-align:center;
+  margin-top:-4px;margin-bottom:14px;line-height:1.8;
+}
+.price-left{}
+.price-label{font-size:.65rem;letter-spacing:.18em;color:rgba(106,80,40,.6);margin-bottom:4px;}
+.price-value{
+  font-family:'EB Garamond',serif;font-size:1.5rem;letter-spacing:.04em;
+  color:rgba(140,100,50,.9);
+}
+.price-unit{font-size:.75rem;color:rgba(140,100,50,.6);}
+.price-right{text-align:right;}
+.spots-label{font-size:.6rem;letter-spacing:.14em;color:rgba(106,80,40,.55);margin-bottom:4px;}
+.spots-value{
+  font-family:'EB Garamond',serif;font-size:1.1rem;
+  color:rgba(184,144,74,.9);letter-spacing:.04em;
+}
+.spots-of{font-size:.65rem;color:rgba(184,144,74,.6);}
+
+/* ── BOOK BUTTON ── */
+.book-btn{
+  display:block;width:100%;
+  font-family:'Noto Serif TC',serif;font-size:.82rem;letter-spacing:.22em;
+  color:#fff;
+  background:linear-gradient(135deg,#B8904A,#D4A860,#B8904A);
+  border:none;padding:16px;border-radius:60px;cursor:pointer;
+  text-align:center;text-decoration:none;
+  box-shadow:0 8px 24px rgba(184,144,74,.35);
+  transition:all .3s ease;margin-bottom:14px;
+}
+@media(hover:hover){.book-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(184,144,74,.5);}}
+.ig-link{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  font-family:'EB Garamond',serif;font-size:.65rem;letter-spacing:.22em;
+  color:rgba(106,80,40,.45);text-decoration:none;
+  transition:color .25s;text-transform:uppercase;
+}
+@media(hover:hover){.ig-link:hover{color:rgba(184,144,74,.9);}}
+.snap-footer-note{
+  text-align:center;font-size:.78rem;letter-spacing:.1em;
+  color:rgba(106,80,40,.38);margin-top:28px;line-height:1.9;
+}
+
+/* ══════════════════════════
+   DESKTOP RWD (768px+)
+══════════════════════════ */
+@media(min-width:768px){
+  .intro-inner{max-width:720px;padding:120px 48px 100px;}
+  .intro-title{font-size:2.2rem;}
+  .intro-sub{font-size:1.2rem;}
+  .intro-eye{font-size:.85rem;margin-bottom:40px;}
+  .intro-quote{font-size:1rem;}
+  .intro-cta{font-size:.95rem;padding:16px 56px;}
+
+  .round-header{max-width:720px;padding:80px 32px 20px;}
+  .round-q{font-size:1.35rem;}
+  .color-grid{max-width:720px;grid-template-columns:repeat(9,1fr);gap:7px;padding:10px 20px 20px;}
+
+  .svc-inner{max-width:720px;padding:90px 36px 70px;}
+  .service-title{font-size:1.1rem;}
+  .hannah-photo{width:120px;height:120px;}
+  .hannah-name-tag{font-size:1.25rem;}
+  .price-card{padding:28px 32px 22px;}
+  .price-value{font-size:1.8rem;}
+  .svc-check-list li{font-size:.95rem;}
+  .proof-text{font-size:.88rem;}
+
+  .snap-inner{max-width:720px;padding:90px 36px 90px;}
+  .snap-title{font-size:1.9rem;}
+  .snap-carousel{max-width:640px;margin:0 auto 8px;}
+  .slide-title{font-size:1.5rem;}
+  .slide-sw-wrap{width:100px;}
+  .slide-text{font-size:1rem;}
+  .diag-block{padding:30px 28px 28px;}
+  .diag-text{font-size:1rem;}
+
+  .float-bar{max-width:720px;left:50%;right:auto;transform:translateX(-50%) translateY(100%);border-radius:16px 16px 0 0;border:1px solid rgba(184,144,74,.18);border-bottom:none;}
+  .float-bar.visible{transform:translateX(-50%) translateY(0);}
+
+  .nav{max-width:100%;padding:14px 40px;}
+  .nav-logo{font-size:.78rem;}
+}
+
+@media(min-width:1024px){
+  .intro-inner{max-width:860px;padding:140px 60px 120px;}
+  .intro-title{font-size:2.6rem;}
+  .intro-sub{font-size:1.3rem;}
+
+  .round-header{max-width:860px;}
+  .color-grid{max-width:860px;grid-template-columns:repeat(10,1fr);gap:8px;}
+
+  .svc-inner{max-width:800px;padding:100px 48px 80px;}
+  .snap-inner{max-width:800px;padding:100px 48px 100px;}
+  .snap-carousel{max-width:700px;}
+
+  .float-bar{max-width:800px;}
+}
+
+/* ══════════════════════════
+   REVEALING PAGE (過渡頁)
+══════════════════════════ */
+#pg-revealing{
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(235,210,170,.45) 0%, rgba(225,200,155,.2) 30%, transparent 60%),
+    radial-gradient(ellipse at 45% 50%, rgba(220,190,140,.15) 0%, transparent 50%),
+    #FAF7F2;
+  justify-content:center;
+}
+.revealing-inner{
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:0;
+}
+.revealing-color-orbs{
+  position:relative;width:300px;height:300px;margin-bottom:24px;
+}
+.rev-glow-a,.rev-glow-b,.rev-glow-c{
+  position:absolute;border-radius:50%;
+  opacity:0;
+}
+.rev-glow-a{
+  width:280px;height:280px;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,
+    rgba(228,195,130,.4) 0%,
+    rgba(218,185,120,.2) 35%,
+    transparent 70%);
+  animation:glowA 3s ease-out forwards;
+}
+.rev-glow-b{
+  width:200px;height:200px;
+  top:40%;left:42%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,
+    rgba(240,210,160,.35) 0%,
+    rgba(230,200,145,.15) 40%,
+    transparent 70%);
+  animation:glowB 3s .4s ease-out forwards;
+}
+.rev-glow-c{
+  width:220px;height:220px;
+  top:55%;left:56%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,
+    rgba(215,175,110,.3) 0%,
+    rgba(200,165,100,.12) 40%,
+    transparent 70%);
+  animation:glowC 3s .8s ease-out forwards;
+}
+@keyframes glowA{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}
+  50%{opacity:.7;transform:translate(-50%,-50%) scale(.8)}
+  100%{opacity:.9;transform:translate(-50%,-50%) scale(1)}
+}
+@keyframes glowB{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  50%{opacity:.6;transform:translate(-50%,-50%) scale(.75)}
+  100%{opacity:.85;transform:translate(-50%,-50%) scale(1)}
+}
+@keyframes glowC{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  50%{opacity:.5;transform:translate(-50%,-50%) scale(.7)}
+  100%{opacity:.8;transform:translate(-50%,-50%) scale(1)}
+}
+.rev-pulse{
+  position:absolute;border-radius:50%;
+  width:160px;height:160px;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,
+    rgba(235,205,150,.25) 0%,
+    transparent 65%);
+  animation:glowPulse 2.8s 1.2s ease-in-out infinite;
+}
+@keyframes glowPulse{
+  0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(.9)}
+  50%{opacity:.8;transform:translate(-50%,-50%) scale(1.3)}
+}
+.revealing-text{
+  font-family:'Noto Serif TC',serif;font-size:1rem;font-weight:400;
+  letter-spacing:.18em;color:rgba(42,28,14,.7);
+  line-height:2;
+  animation:revealTextIn 1.5s .3s both;
+}
+.revealing-sub{
+  font-family:'EB Garamond',serif;font-size:.6rem;font-weight:400;
+  letter-spacing:.5em;color:rgba(184,144,74,.45);
+  text-transform:uppercase;margin-top:16px;
+  animation:revealTextIn 1.5s .8s both;
+}
+@keyframes revealTextIn{
+  from{opacity:0;transform:translateY(12px);filter:blur(3px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+.revealing-line{
+  width:40px;height:1px;margin:24px auto 0;
+  background:linear-gradient(to right,transparent,rgba(184,144,74,.35),transparent);
+  animation:revealLineGrow 2s 1s both;
+}
+@keyframes revealLineGrow{
+  from{width:0;opacity:0}
+  to{width:40px;opacity:1}
+}
+
+/* ══════════════════════════
+   REVEAL PAGE (顯影結果頁)
+══════════════════════════ */
+#pg-reveal{
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(232,212,180,.45) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(220,195,158,.3) 0%, transparent 45%),
+    #FAF7F2;
+}
+.reveal-inner{
+  position:relative;z-index:1;
+  width:100%;max-width:500px;
+  padding:64px 24px 32px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.reveal-eyebrow{
+  font-family:'EB Garamond',serif;font-size:.55rem;font-weight:500;letter-spacing:.5em;
+  color:rgba(184,144,74,.5);text-transform:uppercase;
+  margin-bottom:6px;
+}
+.reveal-title{
+  font-family:'Noto Serif TC',serif;font-size:1.05rem;font-weight:500;
+  letter-spacing:.15em;color:#5C3D1E;margin-bottom:3px;
+}
+.reveal-sub{
+  font-size:.58rem;letter-spacing:.12em;
+  color:rgba(106,80,40,.35);margin-bottom:16px;
+}
+.reveal-line{
+  width:36px;height:1px;margin-bottom:16px;
+  background:linear-gradient(to right,transparent,rgba(184,144,74,.4),transparent);
+}
+.reveal-diag-block{
+  width:100%;
+  padding:20px 18px 18px;
+  background:#FFFFFF;
+  border-radius:16px;
+  box-shadow:0 10px 36px rgba(80,50,20,.12), 0 2px 10px rgba(80,50,20,.06);
+  text-align:center;
+  border:1px solid rgba(184,144,74,.15);
+  margin-bottom:16px;
+}
+.reveal-colors{
+  display:flex;justify-content:center;align-items:flex-end;gap:6px;
+  margin-bottom:14px;
+}
+.reveal-group{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.reveal-swatches{display:flex;gap:3px;}
+.reveal-sw{
+  width:22px;border-radius:6px;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.reveal-label{
+  font-size:.52rem;letter-spacing:.1em;
+  color:rgba(106,80,40,.4);
+}
+.reveal-arrow{
+  font-size:.8rem;color:rgba(184,144,74,.35);
+  padding-bottom:14px;
+}
+.reveal-text{
+  font-family:'Noto Serif TC',serif;font-size:.82rem;font-weight:400;
+  letter-spacing:.04em;line-height:1.95;
+  color:rgba(42,28,14,.82);
+  border-top:1px solid rgba(184,144,74,.1);
+  padding-top:12px;margin-top:2px;
+}
+.reveal-btn-group{
+  display:flex;flex-direction:column;gap:8px;width:100%;
+}
+.reveal-continue-btn{
+  display:block;width:100%;
+  font-family:'Noto Serif TC',serif;font-size:.7rem;letter-spacing:.15em;
+  color:#fff;
+  background:linear-gradient(135deg,#7A5830,#B8854A);
+  border:none;padding:11px 28px;border-radius:60px;cursor:pointer;
+  box-shadow:0 4px 16px rgba(120,80,30,.25);
+  transition:all .28s;
+}
+.reveal-back-btn{
+  display:block;width:100%;
+  font-family:'Noto Serif TC',serif;font-size:.65rem;letter-spacing:.12em;
+  color:rgba(90,60,20,.6);
+  background:rgba(184,144,74,.08);
+  border:1px solid rgba(184,144,74,.25);
+  padding:11px 28px;border-radius:60px;cursor:pointer;
+  transition:all .28s;
+}
+
+/* Reveal page animations */
+#pg-reveal.active .reveal-eyebrow{animation:revealFadeUp 1.2s .1s both;}
+#pg-reveal.active .reveal-title{animation:revealFadeUp 1.2s .4s both;}
+#pg-reveal.active .reveal-sub{animation:revealFadeUp 1s .7s both;}
+#pg-reveal.active .reveal-line{animation:revealLineExpand 1.5s .8s both;}
+#pg-reveal.active .reveal-diag-block{animation:revealCardIn 1.4s 1s both;}
+
+/* 色票顯影動畫：模糊→清晰，像照片沖洗顯影 */
+#pg-reveal.active .reveal-sw{animation:colorDevelop 2s both;}
+#pg-reveal.active .reveal-group:nth-child(1) .reveal-sw{animation-delay:1.3s;}
+#pg-reveal.active .reveal-group:nth-child(3) .reveal-sw{animation-delay:1.8s;}
+#pg-reveal.active .reveal-group:nth-child(5) .reveal-sw{animation-delay:2.3s;}
+#pg-reveal.active .reveal-group .reveal-label{opacity:0;animation:revealFadeUp .8s both;}
+#pg-reveal.active .reveal-group:nth-child(1) .reveal-label{animation-delay:2.2s;}
+#pg-reveal.active .reveal-group:nth-child(3) .reveal-label{animation-delay:2.7s;}
+#pg-reveal.active .reveal-group:nth-child(5) .reveal-label{animation-delay:3.2s;}
+#pg-reveal.active .reveal-arrow{opacity:0;animation:arrowFadeIn .6s both;}
+#pg-reveal.active .reveal-colors>:nth-child(2){animation-delay:2.5s;}
+#pg-reveal.active .reveal-colors>:nth-child(4){animation-delay:3s;}
+#pg-reveal.active .reveal-text{animation:revealTextAppear 1.8s 3.4s both;}
+#pg-reveal.active .reveal-btn-group{animation:revealFadeUp .8s 4s both;}
+
+@keyframes revealFadeUp{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes revealLineExpand{
+  from{width:0;opacity:0}
+  to{width:36px;opacity:1}
+}
+@keyframes revealCardIn{
+  from{opacity:0;transform:translateY(24px) scale(.97);box-shadow:0 0 0 rgba(80,50,20,0)}
+  50%{opacity:.8;transform:translateY(-2px) scale(1.005);box-shadow:0 14px 44px rgba(80,50,20,.15)}
+  to{opacity:1;transform:translateY(0) scale(1);box-shadow:0 10px 36px rgba(80,50,20,.12)}
+}
+@keyframes colorDevelop{
+  0%{opacity:0;filter:blur(12px) saturate(0);transform:scale(.85)}
+  30%{opacity:.4;filter:blur(8px) saturate(.3);transform:scale(.92)}
+  60%{opacity:.75;filter:blur(4px) saturate(.7);transform:scale(.98)}
+  85%{opacity:.95;filter:blur(1px) saturate(.95);transform:scale(1.01)}
+  100%{opacity:1;filter:blur(0) saturate(1);transform:scale(1)}
+}
+@keyframes arrowFadeIn{
+  from{opacity:0;transform:translateX(-6px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes revealTextAppear{
+  0%{opacity:0;transform:translateY(10px);filter:blur(3px)}
+  60%{opacity:.7;filter:blur(1px)}
+  100%{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+
+@media(min-width:768px){
+  .reveal-inner{max-width:680px;padding:100px 36px 100px;}
+  .reveal-title{font-size:1.25rem;}
+  .reveal-text{font-size:.95rem;}
+  .revealing-text{font-size:1.15rem;}
+}
+@media(min-width:1024px){
+  .reveal-inner{max-width:740px;}
+}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:36px;left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:rgba(42,28,14,.9);color:rgba(255,220,140,.95);
+  font-family:'Noto Serif TC',serif;font-size:.7rem;letter-spacing:.12em;
+  padding:10px 24px;border-radius:60px;
+  opacity:0;transition:all .4s ease;
+  pointer-events:none;z-index:9999;white-space:nowrap;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── ANIMATIONS ── */
+@keyframes up{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes slideUp{
+  from{transform:translateY(100%);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+/* ── SNAPSHOT PAGE ANIMATIONS ── */
+/* 標題區依序浮現 */
+#pg-snap.active .snap-eyebrow{animation:snapReveal .8s .1s both;}
+#pg-snap.active .snap-title{animation:snapReveal .8s .3s both;}
+#pg-snap.active .snap-sub{animation:snapReveal .8s .5s both;}
+#pg-snap.active .restart-btn{animation:snapReveal .6s .7s both;}
+@keyframes snapReveal{
+  from{opacity:0;transform:translateY(22px) scale(.97);filter:blur(4px)}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+
+/* 輪播卡片入場 */
+#pg-snap.active .snap-carousel{animation:cardLift .9s .6s both;}
+@keyframes cardLift{
+  from{opacity:0;transform:translateY(40px) scale(.96)}
+  60%{opacity:1;transform:translateY(-6px) scale(1.01)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* 色票光澤掃過 */
+.slide-sw::after{
+  content:'';position:absolute;top:0;left:-100%;
+  width:60%;height:100%;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);
+  animation:shimmer 2.8s 1.2s both;
+  pointer-events:none;
+}
+@keyframes shimmer{
+  0%{left:-100%}
+  100%{left:200%}
+}
+
+/* 診斷區塊揭曉動畫 */
+#pg-snap.active .diag-block{animation:diagReveal 1s .9s both;}
+@keyframes diagReveal{
+  from{opacity:0;transform:translateY(30px);box-shadow:0 0 0 rgba(80,50,20,0)}
+  60%{opacity:1;transform:translateY(-4px);box-shadow:0 16px 48px rgba(80,50,20,.18)}
+  to{opacity:1;transform:translateY(0);box-shadow:0 10px 36px rgba(80,50,20,.14)}
+}
+#pg-snap.active .diag-eyebrow{animation:snapReveal .6s 1.1s both;}
+#pg-snap.active .diag-headline{animation:snapReveal .6s 1.3s both;}
+
+/* 診斷色塊順序彈入 */
+.diag-group{opacity:0;animation:popIn .4s both;}
+.diag-group:nth-child(1){animation-delay:1.4s;}
+.diag-group:nth-child(2){animation-delay:1.55s;}
+.diag-group:nth-child(3){animation-delay:1.6s;}
+.diag-group:nth-child(4){animation-delay:1.75s;}
+.diag-group:nth-child(5){animation-delay:1.8s;}
+.diag-arrow{opacity:0;animation:popIn .3s both;}
+.diag-block .diag-arrow:nth-of-type(1){animation-delay:1.55s;}
+.diag-block .diag-arrow:nth-of-type(2){animation-delay:1.75s;}
+@keyframes popIn{
+  from{opacity:0;transform:scale(.5) translateY(8px)}
+  70%{opacity:1;transform:scale(1.12) translateY(-2px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+
+/* 診斷文字淡入 */
+#pg-snap.active .diag-text{animation:textFadeIn 1.2s 2s both;}
+@keyframes textFadeIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Bio 預覽入場 */
+#pg-snap.active .snap-bio-preview{animation:snapReveal .7s 1.6s both;}
+
+/* CTA 區塊呼吸光暈 */
+#pg-snap.active .snap-cta-block{animation:snapReveal .7s 1.8s both;}
+.snap-cta-block{
+  position:relative;overflow:hidden;
+}
+.snap-cta-block::before{
+  content:'';position:absolute;top:-50%;left:-50%;
+  width:200%;height:200%;
+  background:radial-gradient(ellipse at center,rgba(184,144,74,.12) 0%,transparent 60%);
+  animation:ctaGlow 3.5s 2.5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes ctaGlow{
+  0%,100%{opacity:.3;transform:scale(.8)}
+  50%{opacity:1;transform:scale(1.1)}
+}
+
+/* 按鈕組入場 */
+#pg-snap.active .snap-btn-group{animation:snapReveal .7s 2s both;}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div id="toast"></div>
+
+<!-- ── 浮動確認列 ── -->
+<div class="float-bar" id="floatBar">
+  <div class="float-swatches" id="floatSwatches">
+    <div class="float-sw-empty" id="fSw1"></div>
+    <div class="float-sw-empty" id="fSw2"></div>
+  </div>
+  <div class="float-info">
+    <div class="float-count" id="floatCount">尚未選色</div>
+    <div class="float-hint">再點一次可取消</div>
+  </div>
+  <button class="float-btn" id="floatBtn"
+    onclick="floatNext()"
+    ontouchend="event.preventDefault();floatNext()">確定 →</button>
+</div>
+
+<!-- ── NAV ── -->
+<nav class="nav" id="mainNav">
+  <button class="nav-back hidden" id="navBack" onclick="navBack()">← 上一步</button>
+  <div class="nav-logo">Hannah Chen</div>
+  <button class="nav-home hidden" id="navHome" onclick="goHome()">首頁</button>
+</nav>
+
+<!-- ══════════════════════════
+     INTRO PAGE
+══════════════════════════ -->
+<div class="page active" id="pg-intro">
+  <div class="intro-inner">
+    <div class="intro-eye">Brand Aesthetics Consultation</div>
+    <h1 class="intro-title">Canva 品牌美感實作諮詢</h1>
+    <div class="intro-sub">找到你專屬的表達風格</div>
+    <div class="intro-line"></div>
+    <div class="intro-palette">
+      <div class="ip-sw" style="width:22px;height:36px;background:linear-gradient(158deg,#881428,#CC2E60)"></div>
+      <div class="ip-sw" style="width:22px;height:42px;background:linear-gradient(158deg,#A04010,#C86018)"></div>
+      <div class="ip-sw" style="width:22px;height:52px;background:linear-gradient(158deg,#C87818,#F0A820)"></div>
+      <div class="ip-sw" style="width:22px;height:42px;background:linear-gradient(158deg,#385028,#5A7048)"></div>
+      <div class="ip-sw" style="width:22px;height:36px;background:linear-gradient(158deg,#0E2A5C,#2E4A6B)"></div>
+      <div class="ip-sw" style="width:22px;height:30px;background:linear-gradient(158deg,#987898,#C0A8C0)"></div>
+    </div>
+    <div class="intro-quote">
+      我相信沒有人是「標準色」，<br>你就是獨一無二的色彩。
+    </div>
+    <div class="intro-flow-hint">免費色票測驗 · 約 2 分鐘完成<br><span>✦ 最後可預約一對一諮詢帶走品牌報告</span></div>
+    <button class="intro-cta" onclick="startFlow()">開始你的品牌色彩探索</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     ROUND 1：現在的你
+══════════════════════════ -->
+<div class="page round-page" id="pg-r1">
+  <div class="round-header">
+    <div class="round-label">Round 01 · 現在的你</div>
+    <div class="round-progress">
+      <div class="rp-dot active" id="dot1-1"></div>
+      <div class="rp-dot" id="dot1-2"></div>
+      <div class="rp-dot" id="dot1-3"></div>
+    </div>
+    <div class="round-q">現在的你，是什麼顏色？</div>
+    <div class="round-hint">選 2 個最有感覺的</div>
+    <div class="round-sel-count" id="count1"></div>
+  </div>
+  <div class="color-grid" id="grid1"></div>
+  <div class="round-footer">
+    <button class="r-next-btn" id="next1" onclick="goRound(2)">下一步 →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     ROUND 2：品牌現況
+══════════════════════════ -->
+<div class="page round-page" id="pg-r2">
+  <div class="round-header">
+    <div class="round-label">Round 02 · 你的品牌現在</div>
+    <div class="round-progress">
+      <div class="rp-dot done" id="dot2-1"></div>
+      <div class="rp-dot active" id="dot2-2"></div>
+      <div class="rp-dot" id="dot2-3"></div>
+    </div>
+    <div class="round-q">你的品牌現在，給人什麼感覺？</div>
+    <div class="round-hint">選 2 個最接近現況的</div>
+    <div class="round-sel-count" id="count2"></div>
+  </div>
+  <div class="color-grid" id="grid2"></div>
+  <div class="round-footer">
+    <button class="r-next-btn" id="next2" onclick="goRound(3)">下一步 →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     ROUND 3：未來品牌
+══════════════════════════ -->
+<div class="page round-page" id="pg-r3">
+  <div class="round-header">
+    <div class="round-label">Round 03 · 你希望的品牌方向</div>
+    <div class="round-progress">
+      <div class="rp-dot done" id="dot3-1"></div>
+      <div class="rp-dot done" id="dot3-2"></div>
+      <div class="rp-dot active" id="dot3-3"></div>
+    </div>
+    <div class="round-q">你希望客人看到你時，感受到什麼？</div>
+    <div class="round-hint">選 2 個最接近你心目中的</div>
+    <div class="round-sel-count" id="count3"></div>
+  </div>
+  <div class="color-grid" id="grid3"></div>
+  <div class="round-footer">
+    <button class="r-next-btn" id="next3" onclick="goSnap()">看我的品牌色彩快照 ✦</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     REVEALING PAGE (過渡頁)
+══════════════════════════ -->
+<div class="page" id="pg-revealing">
+  <div class="revealing-inner">
+    <div class="revealing-color-orbs" id="revealingOrbs">
+      <div class="rev-glow-a"></div>
+      <div class="rev-glow-b"></div>
+      <div class="rev-glow-c"></div>
+      <div class="rev-pulse"></div>
+    </div>
+    <div class="revealing-text">
+      品牌色彩<br>顯影中
+    </div>
+    <div class="revealing-sub">Color Revealing</div>
+    <div class="revealing-line"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     REVEAL PAGE (顯影結果頁)
+══════════════════════════ -->
+<div class="page" id="pg-reveal">
+  <div class="reveal-inner">
+    <div class="reveal-eyebrow">Brand Color Reveal</div>
+    <div class="reveal-title">品牌色彩顯影</div>
+    <div class="reveal-sub">三組色彩，映照你的品牌靈魂</div>
+    <div class="reveal-line"></div>
+    <div class="reveal-diag-block">
+      <div class="reveal-colors" id="revealColors"></div>
+      <div class="reveal-text" id="revealText"></div>
+    </div>
+    <div class="reveal-btn-group">
+      <button class="reveal-continue-btn" onclick="goToSnapFromReveal()">查看完整色彩快照</button>
+      <button class="reveal-back-btn" onclick="restartFlow()">重新選色</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     SNAPSHOT PAGE
+══════════════════════════ -->
+<div class="page" id="pg-snap">
+  <div class="snap-inner">
+    <div class="snap-eyebrow">Brand Color Snapshot</div>
+    <div class="snap-title">你的品牌色彩快照</div>
+    <div class="snap-sub">三組顏色，看見你的品牌輪廓</div>
+    <button class="restart-btn" onclick="restartFlow()">↺ 重新選色</button>
+
+    <!-- 輪播：一次一組 -->
+    <div class="snap-carousel" id="snapCarousel"></div>
+    <div class="carousel-dots" id="carouselDots">
+      <div class="c-dot active"></div>
+      <div class="c-dot"></div>
+      <div class="c-dot"></div>
+    </div>
+    <div class="swipe-hint" onclick="advanceCarousel()" style="cursor:pointer;">滑動查看三組色票 →</div>
+
+    <div class="snap-btn-group">
+      <button class="see-more-btn" onclick="goToService()">了解 Canva 品牌美感實作諮詢</button>
+      <button class="dl-snap-btn" onclick="downloadSnap()">下載快照圖片</button>
+    </div>
+    <button class="home-btn" onclick="goHome()">← 重新開始</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     SERVICE PAGE
+══════════════════════════ -->
+<div class="page" id="pg-service">
+  <div class="svc-inner">
+    <div class="hannah-photo-wrap">
+      <div class="hannah-photo">
+        <img src="hannah.jpg" alt="Hannah Chen">
+      </div>
+      <div class="hannah-name-tag">青青</div>
+    </div>
+    <div class="hannah-bio">
+      <div class="hannah-bio-quote">「相信每個人都能活出獨特的自己、找到喜歡的生活方式。」</div>
+      <div class="bio-tags">
+        <div class="bio-tag"><span class="bio-tag-icon">✦</span>水晶飾品設計 · 十年</div>
+        <div class="bio-tag"><span class="bio-tag-icon">✦</span>智堯品牌 Co-founder</div>
+        <div class="bio-tag"><span class="bio-tag-icon">✦</span>IG 視覺規劃 · 排版設計</div>
+        <div class="bio-tag"><span class="bio-tag-icon">✦</span>身心靈品牌協作</div>
+        <div class="bio-tag"><span class="bio-tag-icon">✦</span>品牌美感諮詢</div>
+      </div>
+      <div class="bio-tagline">用質感版面與真誠分享，幫助有故事的你打造品牌氛圍 ✨</div>
+    </div>
+    <div class="snap-eyebrow">Brand Aesthetics Consultation</div>
+    <div class="snap-title" style="margin-bottom:6px">Canva 品牌美感實作諮詢</div>
+    <p class="svc-sub">這一個小時，我們不僅有諮詢，還要實作</p>
+    <ul class="svc-check-list">
+      <li>
+        <span class="svc-check">✦</span>
+        <span><strong>色票對談</strong> — 用色彩釐清品牌心態，找到你真正的視覺方向</span>
+      </li>
+      <li>
+        <span class="svc-check">✦</span>
+        <span><strong>實際優化</strong> — 當場改版你的 Canva 版面，親眼看到改版前後的差異</span>
+      </li>
+      <li>
+        <span class="svc-check">✦</span>
+        <span><strong>工具清單</strong> — 字體、圖庫、AI 工具推薦，全部整理好直接給你帶走</span>
+      </li>
+      <li>
+        <span class="svc-check">✦</span>
+        <span><strong>品牌報告</strong> — 一份專屬你的品牌美感分析，諮詢結束後隨時可回顧</span>
+      </li>
+    </ul>
+    <div class="svc-for-who">
+      <div class="svc-for-who-title">適合你嗎？</div>
+      <ul class="svc-for-who-list">
+        <li>剛開始經營 IG，不知道品牌風格怎麼定</li>
+        <li>版面做了很久，但就是覺得不好看、不夠專業</li>
+        <li>想讓品牌看起來更有質感，吸引對的客戶</li>
+      </ul>
+    </div>
+    <div class="svc-addon">＋ 可加購專屬質感模板製作</div>
+
+    <div class="social-proof">
+      <div class="social-proof-title">What They Say</div>
+      <div class="proof-card">
+        <div class="proof-text">「原本一直覺得自己的版面哪裡怪怪的，諮詢完才發現是配色和留白的問題。青青直接幫我現場改，前後對比差超多！」</div>
+        <div class="proof-author">— 手作飾品品牌主理人</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-text">「最驚喜的是色票測驗，讓我重新認識自己的品牌定位。報告整理得很清楚，現在做圖終於有方向了。」</div>
+        <div class="proof-author">— 身心靈工作者</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-text">「一小時真的很值得，不只是聊天，是實際帶走可以用的東西。推薦給所有還在摸索品牌風格的人。」</div>
+        <div class="proof-author">— IG 經營新手</div>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-card-top">
+        <div class="price-left">
+          <div class="price-label">體驗服務</div>
+          <div><span class="price-value">800</span><span class="price-unit"> / 1hr</span></div>
+        </div>
+        <div class="price-right">
+          <div class="spots-label">本月名額</div>
+          <div>
+            <span class="spots-value" id="spotsNum">3</span>
+            <span class="spots-of"> 位</span>
+          </div>
+        </div>
+      </div>
+      <div class="price-includes">諮詢包含：
+        <ul class="price-includes-list">
+          <li>品牌色票分析與對談</li>
+          <li>Canva 版面實作優化</li>
+          <li>字體・圖庫・AI 工具清單</li>
+          <li>專屬品牌美感分析報告</li>
+        </ul>
+      </div>
+    </div>
+    <a class="book-btn" href="https://docs.google.com/forms/d/1WEGpHhGCiGt85W7lfdjbMrhwdio8RGH1eNDigwXzUyg/edit?chromeless=1" target="_blank">
+      ✦ 立即預約諮詢
+    </a>
+    <div class="book-note">填寫表單後，我會在 24 小時內親自回覆你 ✦</div>
+    <a class="ig-link" href="https://www.threads.com/@hannahchen0505949?hl=zh-tw" target="_blank">
+      ↗ @hannahchen0505949
+    </a>
+    <div class="snap-footer-note">
+      很期待與你的諮詢 ✦<br>
+      帶著這張色彩快照來找我，我們從這裡開始聊。
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// CONFIG — 修改這裡的數字即可更新名額
+// ═══════════════════════════════════════
+const SPOTS_REMAINING = 3;
+
+// ═══════════════════════════════════════
+// CARDS DATA（完整105張，來自初心色譜）
+// ═══════════════════════════════════════
+const CARDS = [
+  {id:"c1",zh:"爐心",en:"Furnace",hex:"#D83018",bg:["#A81008","#D83018"],q:"你現在最想做什麼？",s:"你現在充滿衝勁，有很強烈的行動力想要向前",b:"熱烈有力，帶有強烈感染力的品牌能量，讓人一眼就記住"},
+  {id:"c2",zh:"暮燒",en:"Ember",hex:"#E87030",bg:["#C04818","#E87030"],q:"今天結束了，你還好嗎？",s:"你有些疲憊，但溫暖仍在，你其實還好的",b:"有溫度的個人特色，品牌讓人感到真實而難以忘懷"},
+  {id:"c3",zh:"琥珀時",en:"Time Sealed",hex:"#C86018",bg:["#A04010","#C86018"],q:"有什麼事你沒辦法忘？",s:"你正在珍惜某件無法忘懷的事，它還在影響著你",b:"沉澱感與歷史厚度，傳遞值得信賴、有底蘊的品牌形象"},
+  {id:"c4",zh:"柿霜",en:"Frosted",hex:"#D06828",bg:["#A84818","#D06828"],q:"你在等一件什麼事？",s:"你正在等一件事，帶著期待，也有一點不確定",b:"療癒中帶著個性，品牌有自己的調性，不隨波逐流"},
+  {id:"c5",zh:"土根",en:"Earth Root",hex:"#C04828",bg:["#903018","#C04828"],q:"你的力氣從哪裡來？",s:"你知道自己的力氣從哪裡來，你很穩",b:"扎實有根基，讓受眾覺得品牌可以依靠、長期信任"},
+  {id:"c6",zh:"珊瑚息",en:"Coral Breath",hex:"#E07058",bg:["#C04838","#E07058"],q:"最近什麼事讓你覺得有意義？",s:"你對某件事感到很有意義，它讓你覺得值得",b:"親切有人情味，品牌容易讓人靠近，降低距離感"},
+  {id:"c7",zh:"粉珊瑚",en:"Pink Coral",hex:"#FF9B8A",bg:["#E07860","#FF9B8A"],q:"你現在最想見的人是誰？",s:"你很想見某個人，有一種渴望連結的感覺",b:"活潑輕快，帶出愉悅的互動感，適合有溫度的品牌個性"},
+  {id:"c8",zh:"陶痕",en:"Clay Trace",hex:"#A86040",bg:["#804030","#A86040"],q:"你有什麼別人不知道的地方？",s:"你有一個面向，是別人不知道也沒機會看見的",b:"手感溫潤、樸實真實，品牌拒絕完美濾鏡，讓人感到誠實"},
+  {id:"c9",zh:"柔桃",en:"Soft Peach",hex:"#FFB89E",bg:["#FFA080","#FFB89E"],q:"最近誰讓你覺得被照顧了？",s:"你最近感覺被照顧、被好好對待了",b:"溫柔細膩，有女性質感的包容力，品牌讓人感到被呵護"},
+  {id:"c10",zh:"樹紋",en:"Tree Ring",hex:"#9A7050",bg:["#785038","#9A7050"],q:"你走到現在，什麼沒有變？",s:"你走了很遠，但有些核心的東西，始終沒有變",b:"穩定耐看，像老朋友一樣，品牌讓人有長久信賴的感受"},
+  {id:"c11",zh:"杏暖",en:"Apricot Warmth",hex:"#E8C0A0",bg:["#C09070","#E8C0A0"],q:"有什麼記憶最近一直出現？",s:"某個記憶最近一直浮現，有些事你還在消化",b:"柔和舒心，品牌給人家一般的親近感，無壓力的存在"},
+  {id:"c12",zh:"老玫瑰",en:"Old Rose",hex:"#C17B7B",bg:["#A05858","#C17B7B"],q:"有什麼事，你現在比以前更懂了？",s:"你比以前更懂了某件事，有一種成熟的清楚",b:"內斂優雅，有底蘊的成熟品味，品牌不張揚但有深度"},
+  {id:"c13",zh:"土息",en:"Earth Breath",hex:"#8A6050",bg:["#604038","#8A6050"],q:"什麼讓你覺得安心？",s:"你知道什麼讓你安心，那件事現在正在支撐著你",b:"自然質樸，品牌接地氣且不刻意，讓受眾感到真實"},
+  {id:"c14",zh:"深木息",en:"Deep Wood",hex:"#5A3C28",bg:["#381E10","#5A3C28"],q:"你最不容易被動搖的是什麼？",s:"你有一個核心，很難被動搖，你知道它在哪",b:"厚重穩定，沉靜中帶著值得信賴的質感，品牌有歲月感"},
+  {id:"c15",zh:"芙蓉變",en:"Shifting",hex:"#E8B8B8",bg:["#C08888","#E8B8B8"],q:"你今天和昨天一樣嗎？",s:"你今天和昨天不太一樣，你正在流動與轉變中",b:"柔美流動，品牌帶有浪漫的不確定美感，讓人想持續關注"},
+  {id:"c16",zh:"玫瑰深",en:"Rose Depth",hex:"#B88888",bg:["#906868","#B88888"],q:"有什麼你沒讓人看見過？",s:"你有某個面向從來沒讓人看見，只有你知道",b:"成熟低調，品牌說話不多但有深度，越懂越有魅力"},
+  {id:"c17",zh:"桃訊",en:"Signal",hex:"#D8A8A8",bg:["#B07880","#D8A8A8"],q:"你期待什麼？",s:"你正在期待某件事，輕盈而真實的期待感",b:"輕盈期待感，品牌讓人想靠近探索，有一種輕柔的吸引力"},
+  {id:"c18",zh:"夜土",en:"Night Soil",hex:"#3A3028",bg:["#201808","#3A3028"],q:"你現在擔心什麼？",s:"你心裡有些擔心，思緒比較重，需要時間消化",b:"神秘沉穩，品牌有強烈的個人辨識度，不易被複製"},
+  {id:"c19",zh:"深潭",en:"Deep Pool",hex:"#2A2018",bg:["#181008","#2A2018"],q:"有什麼事你從來沒說出口？",s:"有些話你從來沒說出口，沉在最底下",b:"極簡深邃，品牌透過高端感與神秘感建立距離美"},
+  {id:"c20",zh:"暖石",en:"Warm Stone",hex:"#B8AEA5",bg:["#988E85","#B8AEA5"],q:"什麼讓你覺得穩？",s:"你感覺穩定，知道讓你站穩的是什麼",b:"舒適穩定，中性美感讓品牌有放鬆感，不造成壓力"},
+  {id:"c21",zh:"月灰",en:"Moon Ash",hex:"#D4D0CC",bg:["#ACA8A4","#D4D0CC"],q:"睡前你在想什麼？",s:"睡前你的腦袋裡有很多事，靜不太下來",b:"輕盈現代，品牌有留白感，讓受眾有自己詮釋的空間"},
+  {id:"c22",zh:"蔓玫",en:"Climbing Rose",hex:"#E0B8B8",bg:["#C090A0","#E0B8B8"],q:"你最近在往哪個方向走？",s:"你最近正在往某個方向移動，緩慢但真實",b:"浪漫流動，品牌有自己的詩意節奏，吸引有品味的受眾"},
+  {id:"c23",zh:"晨金",en:"Morning Gold",hex:"#F0A820",bg:["#C87818","#F0A820"],q:"你今天最想做但還沒做的是什麼？",s:"你有很想做的事，能量在那裡，但還沒開始",b:"充滿活力，品牌積極向前的能量讓人想跟隨"},
+  {id:"c24",zh:"穗金",en:"Grain Gold",hex:"#E89030",bg:["#C06818","#E89030"],q:"有什麼事你覺得值了？",s:"你做了某件你覺得值得的事，心裡有一種踏實",b:"豐盛有底氣，品牌傳遞成熟的實力感，讓受眾覺得值得"},
+  {id:"c25",zh:"向光",en:"Light Seeking",hex:"#E8D070",bg:["#C0A840","#E8D070"],q:"什麼讓你提起勁？",s:"你感覺振奮，有什麼讓你提起勁想要繼續",b:"明亮正向，品牌讓人看了就感到振奮，充滿前進的能量"},
+  {id:"c26",zh:"沙息",en:"Sand Breath",hex:"#C4A878",bg:["#A08850","#C4A878"],q:"你一直帶著的是什麼？",s:"你一直帶著某些東西走到現在，它是你的一部分",b:"溫潤中性，品牌細膩低調，傳遞有質感的高雅品味"},
+  {id:"c27",zh:"穀暖",en:"Grain Warmth",hex:"#D8C090",bg:["#B8A068","#D8C090"],q:"有什麼你捨不得給出去？",s:"你有某些珍貴的東西，不是那麼容易輕易給出去",b:"暖調輕奢，品牌傳遞珍貴而不張揚的氛圍感"},
+  {id:"c28",zh:"土深",en:"Deep Earth",hex:"#7A5C3A",bg:["#5A3C1A","#7A5C3A"],q:"對你來說什麼最重要？",s:"你很清楚對你最重要的是什麼，你不需要猶豫",b:"深沉扎根，品牌傳遞永恆穩定的核心價值，不隨潮流搖擺"},
+  {id:"c29",zh:"燭息",en:"Candle Breath",hex:"#F0E0B8",bg:["#D0B880","#F0E0B8"],q:"誰讓你不覺得孤單？",s:"有人讓你不覺得孤單，那個人你知道是誰",b:"溫潤包容，品牌有家的溫度感，讓受眾感到被接納"},
+  {id:"c30",zh:"石暖",en:"Stone Warmth",hex:"#8A7A68",bg:["#605048","#8A7A68"],q:"有什麼你一直沒說謝謝？",s:"有什麼人或事你一直沒說謝謝，那個感謝還在",b:"低調質感，品牌越看越耐看，有一種不急不徐的個性"},
+  {id:"c31",zh:"炭黑",en:"Charcoal Black",hex:"#383028",bg:["#201808","#383028"],q:"你付出過的，有什麼留下來了？",s:"你付出過的，有些東西真的留下來了，看得見",b:"俐落高端，品牌有強烈識別度與力量感，讓人印象深刻"},
+  {id:"c32",zh:"鐵沉",en:"Iron Silence",hex:"#504840",bg:["#302820","#504840"],q:"有什麼話你一直沒說？",s:"你有話一直沒說，那些話還壓在某個地方",b:"嚴肅專業，品牌傳遞紮實可信的形象，讓受眾放心交託"},
+  {id:"c33",zh:"灰寂",en:"Ash Silence",hex:"#706860",bg:["#504848","#706860"],q:"有什麼事已經結束了？",s:"某件事已經結束了，你還在處理它結束後的感受",b:"極簡冷靜，設計感強的當代風格，品牌有清晰的美學立場"},
+  {id:"c34",zh:"霜薄",en:"Thin Frost",hex:"#C8C4BC",bg:["#A09C94","#C8C4BC"],q:"最近什麼事讓你覺得累？",s:"你最近有點累，某件事消耗了你不少力氣",b:"輕盈通透，現代而乾淨的視覺語言，品牌不過度包裝"},
+  {id:"c35",zh:"雲淡",en:"Faint Cloud",hex:"#CCC8C0",bg:["#A4A09A","#CCC8C0"],q:"有什麼事可以先放著不管？",s:"你知道有些事可以先放著，不是所有事都要立刻解決",b:"無壓力感，品牌給受眾呼吸的空間，輕盈而不強迫"},
+  {id:"c36",zh:"蘆息",en:"Reed Breath",hex:"#D0C8C0",bg:["#A8A09A","#D0C8C0"],q:"你怎麼從不好的狀態回來？",s:"你有方法從不好的狀態回來，你比你以為的更有韌性",b:"自然低語，品牌安靜卻有存在感，吸引有細膩感受力的受眾"},
+  {id:"c37",zh:"霧晨",en:"Morning Haze",hex:"#E0DCD4",bg:["#B8B4AC","#E0DCD4"],q:"有什麼事你還看不清楚？",s:"有些事你還看不清楚，但你知道答案會來的",b:"朦朧詩意，品牌創造若即若離的磁力，讓人想靠近了解"},
+  {id:"c38",zh:"牙溫",en:"Ivory Warmth",hex:"#E8DEC0",bg:["#C8B898","#E8DEC0"],q:"什麼讓你覺得自己是真實的？",s:"你感覺自己是真實的，不是在扮演任何角色",b:"溫暖純粹，品牌精緻中有著手工感，傳遞用心的溫度"},
+  {id:"c39",zh:"白霧",en:"White Mist",hex:"#E8E4E0",bg:["#C8C4C0","#E8E4E0"],q:"有什麼感覺你說不清楚？",s:"你有種感覺說不清楚是什麼，但它確實在那裡",b:"純粹潔淨，品牌讓人聯想到開闊與自由，有高度的美感純粹性"},
+  {id:"c40",zh:"稻暖",en:"Rice Warmth",hex:"#F0E8D8",bg:["#D8C8A8","#F0E8D8"],q:"什麼一直在支持你？",s:"有什麼一直在支持你，就算你沒說出來它也在",b:"溫柔呵護，品牌傳遞日常中的美好感，讓受眾每天都想回來"},
+  {id:"c41",zh:"暖金",en:"Warm Gold",hex:"#F5E6C8",bg:["#D8C8A8","#F5E6C8"],q:"今天有什麼小事讓你開心？",s:"今天有一件小事讓你開心了，你記得是哪件",b:"暖光感，品牌讓人聯想到幸福的日常片段，充滿生活感"},
+  {id:"c42",zh:"新葉光",en:"Fresh Leaf",hex:"#72A030",bg:["#508018","#72A030"],q:"你現在什麼正在開始？",s:"你有什麼正在開始，是新的、還帶著青澀的能量",b:"清新有活力，品牌傳遞新生與可能性，讓人感到充滿期待"},
+  {id:"c43",zh:"芽光",en:"Sprout Light",hex:"#8AAA50",bg:["#688030","#8AAA50"],q:"你最近在長成什麼樣子？",s:"你最近在長成一個新的樣子，還不確定，但在進行中",b:"成長感，有機而充滿希望，品牌像一顆持續發芽的種子"},
+  {id:"c44",zh:"野息",en:"Wild Breath",hex:"#8A9868",bg:["#607040","#8A9868"],q:"你需要什麼樣的空間？",s:"你需要一種自在、不受拘束的空間，那對你很重要",b:"自然自在，品牌無拘束的生活感讓人感到輕鬆與自由"},
+  {id:"c45",zh:"木灰",en:"Wood Ash",hex:"#A8A898",bg:["#787868","#A8A898"],q:"你正在放下什麼？",s:"你正在放下某些東西，那個過程還在進行中",b:"沉穩自然，品牌低調但有辨識度，讓人靜靜欣賞"},
+  {id:"c46",zh:"野草息",en:"Wild Grass",hex:"#4A7A38",bg:["#2C5020","#4A7A38"],q:"有什麼你一直沒有放棄？",s:"有件事你一直沒有放棄，就算很難也還在",b:"堅韌有生命力，品牌傳遞不輕易放棄的精神與態度"},
+  {id:"c47",zh:"苔石",en:"Moss Stone",hex:"#5A7048",bg:["#385028","#5A7048"],q:"有誰一直在你旁邊你沒特別注意？",s:"有人一直在你旁邊，你可能沒有特別注意到",b:"質樸耐久，品牌像時間淬鍊出的質感，越久越值得信賴"},
+  {id:"c48",zh:"葉深",en:"Leaf Depth",hex:"#384E30",bg:["#203018","#384E30"],q:"有什麼你忽略了很久？",s:"有什麼你忽略了很久，它一直都在但你沒回頭看",b:"深沉自然，品牌有沉澱感的成熟品味，吸引有深度的受眾"},
+  {id:"c49",zh:"草息",en:"Herb Breath",hex:"#A2B5A0",bg:["#85A085","#A2B5A0"],q:"你最確定的一件事是什麼？",s:"你有一件事非常確定，那個確定讓你感到安穩",b:"溫和平靜，品牌讓人放鬆，適合療癒系或身心靈相關領域"},
+  {id:"c50",zh:"竹息",en:"Bamboo",hex:"#5A8860",bg:["#3A6040","#5A8860"],q:"你現在心裡有空間嗎？",s:"你心裡現在有空間，有一種從容的清醒",b:"清爽有節奏，品牌有東方美感的現代詮釋，簡潔而有韻味"},
+  {id:"c51",zh:"林息",en:"Forest Breath",hex:"#3A6848",bg:["#224830","#3A6848"],q:"你現在擁有什麼？",s:"你清楚自己現在擁有什麼，那些東西是真實的",b:"清新自在，品牌有氧感的生活風格，讓受眾想要跟隨"},
+  {id:"c52",zh:"森深",en:"Forest Deep",hex:"#2A5038",bg:["#183028","#2A5038"],q:"有什麼事你還沒搞懂？",s:"有件事你還沒搞懂，你還在深處尋找答案",b:"深層靜謐，品牌有高端自然的奢感，吸引注重生活品質的受眾"},
+  {id:"c53",zh:"荷光",en:"Lotus Light",hex:"#E0F4E8",bg:["#C0D8D0","#E0F4E8"],q:"在很難的時候你靠什麼撐過去？",s:"你靠著某些東西撐過了很難的時刻，那很不容易",b:"清透空靈，品牌有東方感的精緻美學，輕盈卻有內涵"},
+  {id:"c54",zh:"瓷青",en:"Celadon Glow",hex:"#3A9A88",bg:["#1F6A5C","#3A9A88"],q:"誰最了解你？",s:"你心裡知道誰最了解你，那種被懂的感覺很珍貴",b:"東方精緻，品牌有文化底蘊的美學感，讓人感到細膩獨特"},
+  {id:"c55",zh:"薄荷息",en:"Mint",hex:"#5AB8A0",bg:["#388870","#5AB8A0"],q:"什麼讓你一下子清醒？",s:"某件事讓你一下子清醒，那個清醒還在",b:"清新活力，品牌讓人一看就清醒，傳遞直接而乾淨的訊息"},
+  {id:"c56",zh:"苔深",en:"Deep Moss",hex:"#2A7A58",bg:["#1A5C40","#2A7A58"],q:"有什麼在你身上慢慢變多？",s:"有些東西在你身上慢慢變多，你感覺得到",b:"深度靜謐，品牌自然中有高端氣質，不張揚但有份量"},
+  {id:"c57",zh:"冰息",en:"Ice Breath",hex:"#70B8B0",bg:["#4A9090","#70B8B0"],q:"有什麼在你不注意的時候改變了？",s:"有些事在你不注意的時候改變了，你最近才意識到",b:"清涼通透，品牌輕盈現代的視覺語言讓人感到清醒舒適"},
+  {id:"c58",zh:"晨露",en:"Morning Dew",hex:"#B8D0C8",bg:["#88A8A0","#B8D0C8"],q:"有什麼你知道不會長久？",s:"你知道某些美好不會長久，你在有意識地珍惜它",b:"早晨質感，品牌傳遞每天重新開始的清新起點感"},
+  {id:"c59",zh:"海岸",en:"Coast",hex:"#5090A0",bg:["#306878","#5090A0"],q:"你和什麼之間需要一條線？",s:"你和某件事或某個人之間，需要一條清楚的線",b:"開闊自由，品牌讓人聯想到邊界與可能性，有療癒的距離感"},
+  {id:"c60",zh:"湖心",en:"Lake Heart",hex:"#4A9898",bg:["#2A6868","#4A9898"],q:"有什麼事你還沒看懂？",s:"有件事你還沒看懂，但你知道答案就在某處等你",b:"靜謐深邃，品牌有思考感的氣質，讓受眾感到值得深入了解"},
+  {id:"c61",zh:"泉清",en:"Clear Spring",hex:"#88C0C0",bg:["#5898A0","#88C0C0"],q:"有什麼是你一直可以依賴的？",s:"有什麼是你一直可以依賴的，那個支持很穩定",b:"清澈可依賴，品牌傳遞誠實與透明，讓受眾放心信任"},
+  {id:"c62",zh:"藍霧",en:"Blue Mist",hex:"#B4C7D9",bg:["#90A8C0","#B4C7D9"],q:"有什麼你很難解釋？",s:"有件事你很難跟別人解釋清楚，只有你自己懂",b:"柔和朦朧，品牌有詩意的輕盈感，適合感性或創意型品牌"},
+  {id:"c63",zh:"藍寂",en:"Sea Depth",hex:"#1A4A8A",bg:["#0E2A5C","#1A4A8A"],q:"什麼讓你很難動搖？",s:"你有個東西讓你很難動搖，它就是你的根",b:"沉穩有力，品牌傳遞強烈的可信度，讓受眾對品牌充滿信心"},
+  {id:"c64",zh:"湖沉",en:"Lake Sink",hex:"#3A5080",bg:["#203060","#3A5080"],q:"有什麼你放在心裡最底下？",s:"你把某些事放在心裡最底下，它一直在那裡",b:"深沉內斂，品牌有豐富內涵，讓人每次接觸都有新的感受"},
+  {id:"c65",zh:"靛深",en:"Indigo Deep",hex:"#2A3A6A",bg:["#161E48","#2A3A6A"],q:"你現在最深的感受是什麼？",s:"你正在感受一種很深的感覺，它很真實",b:"深度感性，品牌帶有藝術性的個性，吸引有美感的受眾群"},
+  {id:"c66",zh:"深海藍",en:"Deep Ocean",hex:"#2E4A6B",bg:["#1A3050","#2E4A6B"],q:"有什麼一直讓你覺得穩？",s:"有什麼一直讓你覺得穩，那個穩定感是你的依靠",b:"穩定深邃，品牌傳遞長久可信的感覺，讓受眾長期跟隨"},
+  {id:"c67",zh:"墨色",en:"Ink",hex:"#162850",bg:["#0A1430","#162850"],q:"有什麼已經成為你的一部分？",s:"有什麼已經成為你的一部分，你已經分不清了",b:"極簡俐落，品牌帶有東方文人氣質，傳遞高端而有文化深度"},
+  {id:"c68",zh:"暮藍",en:"Dusk Blue",hex:"#2A4060",bg:["#162438","#2A4060"],q:"一天快結束的時候你在想什麼？",s:"一天快結束時，你的思緒裡有件事一直繞",b:"靜謐優雅，品牌在沉穩中帶有情感溫度，讓人感到安心"},
+  {id:"c69",zh:"夜緩",en:"Night Slow",hex:"#0E1E40",bg:["#060E28","#0E1E40"],q:"什麼讓你覺得世界很大？",s:"你感覺世界很大，自己很小，那不是壞事",b:"深沉高端，品牌適合打造奢感或神秘路線，有強烈個性"},
+  {id:"c70",zh:"蘭夜",en:"Orchid Night",hex:"#483860",bg:["#302848","#483860"],q:"有什麼只有你自己知道？",s:"有什麼只有你自己知道，你沒有說出去的理由",b:"神秘獨特，品牌有高辨識度的個性，讓人印象深刻難以複製"},
+  {id:"c71",zh:"草紫",en:"Lavender Herb",hex:"#A8A0C0",bg:["#807898","#A8A0C0"],q:"有什麼你記得很久了？",s:"有什麼你記了很久，它輕輕地附著在你身上",b:"柔和詩意，品牌帶有夢幻感，吸引追求輕盈美感的受眾"},
+  {id:"c72",zh:"藤垂",en:"Hanging Vine",hex:"#B0A8C8",bg:["#888098","#B0A8C8"],q:"有什麼事一直還沒解決？",s:"有件事一直還沒解決，它懸在那裡讓你有些牽掛",b:"優雅低垂，品牌有自己的韻律感，不急不徐但有獨特吸引力"},
+  {id:"c73",zh:"煙淡",en:"Faint Smoke",hex:"#C0B8C8",bg:["#988898","#C0B8C8"],q:"有什麼在你生命裡慢慢淡了？",s:"某些東西在你生命裡慢慢淡了，你正在消化那個改變",b:"輕盈消隱感，品牌安靜而有品味，吸引懂得欣賞細節的受眾"},
+  {id:"c74",zh:"紫霧",en:"Purple Mist",hex:"#C8B4D0",bg:["#A890B0","#C8B4D0"],q:"你現在是什麼心情？",s:"你現在的心情說不太清楚，很複雜，混在一起",b:"浪漫朦朧，品牌傳遞有故事感的氛圍，讓受眾感到被理解"},
+  {id:"c75",zh:"尾孤",en:"Lone Iris",hex:"#704868",bg:["#503050","#704868"],q:"有什麼你說不清楚自己是什麼感覺？",s:"你有種說不清楚的感覺，它飄在那裡",b:"孤高獨特，品牌有強烈個人辨識度，不走大眾路線"},
+  {id:"c76",zh:"嵐紫",en:"Purple Haze",hex:"#907890",bg:["#685870","#907890"],q:"有什麼你還在想？",s:"你還在想某件事，停不下來，它還沒走",b:"沉穩神秘，品牌帶有藝術感，讓受眾感到與眾不同的連結"},
+  {id:"c77",zh:"芋柔",en:"Soft Taro",hex:"#C0A8B8",bg:["#988090","#C0A8B8"],q:"你最柔軟的地方在哪裡？",s:"你最柔軟的地方被觸碰到了，你感覺得到",b:"柔和包容，品牌親近而不失溫柔的質感，讓人感到被接納"},
+  {id:"c78",zh:"暮薄",en:"Thin Twilight",hex:"#C0A8C0",bg:["#987898","#C0A8C0"],q:"你在猶豫什麼？",s:"你正在猶豫某件事，還沒有決定，停在中間",b:"輕盈暮色，品牌在微妙之間的詩意感，有獨特的視覺記憶點"},
+  {id:"c79",zh:"胭紅",en:"Carmine",hex:"#CC2E60",bg:["#A01840","#CC2E60"],q:"什麼讓你覺得很活著？",s:"你感覺活著，某件事讓你有很強烈的存在感",b:"熱烈鮮明，品牌讓人一眼就記住，衝擊力強且充滿生命力"},
+  {id:"c80",zh:"薔野",en:"Wild Bramble",hex:"#B83040",bg:["#882030","#B83040"],q:"有什麼你不需要別人同意就很確定？",s:"你很確定某件事，不需要任何人同意你",b:"強烈有個性，品牌帶有自主意識的態度，讓受眾感到共鳴"},
+  {id:"c81",zh:"染深",en:"Deep Dye",hex:"#9A1838",bg:["#700818","#9A1838"],q:"誰或什麼對你影響最深？",s:"有人或某件事對你影響很深，那個影響還在",b:"深沉濃郁，品牌有強烈感染力，讓人接觸後難以忘記"},
+  {id:"c82",zh:"霞暮",en:"Dusk Glow",hex:"#C84858",bg:["#A03040","#C84858"],q:"你道別過什麼？",s:"你道別過某些東西，那個告別讓你有了什麼",b:"美麗且有故事感，品牌讓人聯想到轉折與新生的力量"},
+  {id:"c83",zh:"粉透",en:"Translucent Pink",hex:"#E0607C",bg:["#B83858","#E0607C"],q:"有什麼你藏不住？",s:"你有什麼藏不住，它會自己跑出來",b:"通透明亮，品牌有年輕活力的親切感，讓受眾快速建立連結"},
+  {id:"c84",zh:"含苞",en:"Sealed Bud",hex:"#881428",bg:["#600010","#881428"],q:"有什麼話你還沒說？",s:"你有話還沒說出口，那些話還等著一個時機",b:"深沉含蓄，品牌在低調中蘊藏強大能量，越了解越有魅力"},
+  {id:"c85",zh:"梅寒",en:"Cold Plum",hex:"#A83850",bg:["#802840","#A83850"],q:"在很難的時候你怎麼還撐著？",s:"你在很難的情況下還在撐著，你比自己以為的還強",b:"冷艷高貴，品牌傳遞獨特而堅毅的氣質，讓人肅然起敬"},
+  {id:"c86",zh:"石榴",en:"Pomegranate",hex:"#902840",bg:["#681828","#902840"],q:"你現在感覺最充實的是什麼？",s:"你現在感覺充實飽滿，某件事讓你覺得活得很紮實",b:"豐盛強烈，品牌充滿生命力與張力，讓受眾感到飽滿充實"},
+  {id:"c87",zh:"藥放",en:"Blooming Peony",hex:"#B87880",bg:["#906068","#B87880"],q:"有什麼你想全部給出去？",s:"你有什麼想全部給出去，那種給出去的感覺讓你快樂",b:"溫柔奔放，品牌有給予感，適合強調愛與分享的品牌核心"},
+  {id:"c88",zh:"藕紋",en:"Lotus Root Mark",hex:"#C89098",bg:["#A07078","#C89098"],q:"你給別人看的和你真實的，一樣嗎？",s:"你給別人看的和你真實的，不完全一樣",b:"細膩含蓄，品牌有東方感的溫柔美學，讓人感到細心與真誠"},
+  {id:"c89",zh:"蜜琥",en:"Honey Amber",hex:"#D4A430",bg:["#B88418","#D4A430"],q:"有什麼是你花了很長時間才有的？",s:"你有很珍貴的東西，是花了很長時間才換來的",b:"珍貴沉穩，品牌讓人聯想到用時間換來的品質感與信任"},
+  {id:"c90",zh:"薑黃",en:"Turmeric Gold",hex:"#E8A018",bg:["#C08010","#E8A018"],q:"有什麼事你越來越確定？",s:"你越來越確定某件事，那個確定給了你力量",b:"明確有力，品牌充滿自信的暖調感，讓受眾感到確定與安心"},
+  {id:"c91",zh:"晨曦",en:"Dawn Light",hex:"#FFD8B8",bg:["#E8B898","#FFD8B8"],q:"今天什麼開始了？",s:"有什麼今天開始了，輕輕的，但你感覺得到",b:"溫柔起點，品牌傳遞剛剛開始就充滿希望的輕盈感"},
+  {id:"c92",zh:"珍珠光",en:"Pearl Glow",hex:"#F8F0E8",bg:["#E0D8D0","#F8F0E8"],q:"你是什麼樣的人，要看在什麼情況下？",s:"你是什麼樣的人，很難用一句話說，要看情況",b:"低調精緻，品牌有珍珠般含蓄的高端質感，讓人越看越喜歡"},
+  {id:"c93",zh:"薔薇粉",en:"Rose Pink",hex:"#F4D0D8",bg:["#D8B0B8","#F4D0D8"],q:"有什麼剛進來你的生活？",s:"有什麼剛進入你的生活，還很新鮮",b:"溫柔浪漫，品牌有少女感又不過分甜膩，讓人感到輕盈愉悅"},
+  {id:"c94",zh:"檸檬淡",en:"Pale Lemon",hex:"#F8F0C0",bg:["#E0D8A8","#F8F0C0"],q:"有什麼還在準備中？",s:"你有什麼還在準備中，還沒完成，還在路上",b:"清新輕快，品牌有點俏皮的陽光感，讓受眾感到愉快親切"},
+  {id:"c95",zh:"青檸",en:"Lime",hex:"#C8E8A8",bg:["#A8C888","#C8E8A8"],q:"什麼讓你立刻清醒？",s:"某件事讓你立刻清醒，那個清醒很乾淨",b:"活力鮮亮，品牌帶有清醒感的年輕能量，讓人立刻注意到"},
+  {id:"c96",zh:"水綠",en:"Water Green",hex:"#C0E0D0",bg:["#A0C8B8","#C0E0D0"],q:"你讓別人看得清楚嗎？",s:"你在想自己是否讓別人看得清楚，還是有些模糊",b:"清透柔和，品牌傳遞通透誠懇的形象，讓受眾感到信任"},
+  {id:"c97",zh:"青瓷淡",en:"Pale Celadon",hex:"#D0E8E0",bg:["#B0C8C0","#D0E8E0"],q:"有什麼你不說，但一直在？",s:"有什麼你沒有說，但它一直在，安靜地存在著",b:"細膩安靜，品牌有東方詩意的精緻感，讓人感受到含蓄的美"},
+  {id:"c98",zh:"天青",en:"Sky Blue",hex:"#A8C8E0",bg:["#88A8C0","#A8C8E0"],q:"有什麼讓你想要更自由？",s:"你想要更自由，有些地方你覺得還被束縛著",b:"開闊自由，品牌傳遞輕盈與無拘束的氣質，讓受眾感到舒展"},
+  {id:"c99",zh:"晴空",en:"Clear Sky",hex:"#C8D8F0",bg:["#A8B8D0","#C8D8F0"],q:"你答應過自己什麼？",s:"你答應過自己某件事，你還記得是什麼",b:"清亮舒展，品牌讓受眾感到開心放鬆，有正面而清新的能量"},
+  {id:"c100",zh:"丁香",en:"Lilac",hex:"#D8C8E8",bg:["#B8A8C8","#D8C8E8"],q:"有什麼一直在提醒你？",s:"有什麼一直在提醒你，你沒辦法完全忽略它",b:"柔紫浪漫，品牌帶有夢境質感，讓受眾感到輕盈而美好"},
+  {id:"c101",zh:"薰衣草淡",en:"Pale Lavender",hex:"#E8D8F0",bg:["#C8B8D0","#E8D8F0"],q:"有什麼越來越淡，但你反而越來越懂它？",s:"有什麼越來越淡，但你反而越來越懂它",b:"淡雅療癒，品牌有撫慰人心的力量，讓受眾感到安靜與被理解"},
+  {id:"c102",zh:"石灰",en:"Limestone",hex:"#E0D8C8",bg:["#C0B8A8","#E0D8C8"],q:"有什麼陪著你走了很久？",s:"有什麼陪著你走了很久，它還在，一直都在",b:"自然樸實，品牌時間越久越有韻味，讓受眾長期陪伴"},
+  {id:"c103",zh:"米白",en:"Rice White",hex:"#F0E8D8",bg:["#D0C8B8","#F0E8D8"],q:"你身上什麼是有生命的？",s:"你身上有什麼是有生命的，那個生命力是真實的",b:"純粹有生命感，品牌溫潤且不造作，讓受眾感到真實可親"},
+  {id:"c104",zh:"霜白",en:"Frost White",hex:"#F8F4F0",bg:["#E0DCD8","#F8F4F0"],q:"有什麼是你沒想到的，但得到了？",s:"你得到了一些沒想到的東西，那個驚喜你還在消化",b:"乾淨開闊，品牌有現代感的輕盈高質感，傳遞清澈而俐落的美"},
+  {id:"c105",zh:"月白",en:"Moon White",hex:"#F8F8F4",bg:["#E8E8E4","#F8F8F4"],q:"什麼讓你安靜下來？",s:"某件事讓你安靜下來，那個安靜很珍貴",b:"安靜純白，品牌讓受眾深呼吸，傳遞極簡而深邃的空間感"},
+];
+const COLOR_ORDER = [
+  "c84","c81","c86","c85","c79","c80","c82","c83","c5","c1",
+  "c12","c87","c15","c16","c88","c17","c22","c93","c6","c7",
+  "c9","c91","c2","c4","c3","c8","c10","c23","c24","c89",
+  "c90","c25","c29","c94","c11","c38","c27","c26","c42","c44",
+  "c43","c45","c41","c40","c102","c103","c92","c34","c21","c35",
+  "c36","c37","c39","c104","c105","c95","c96","c97","c46","c49",
+  "c47","c48","c50","c52","c51","c56","c54","c55","c53","c58",
+  "c57","c61","c60","c59","c99","c98","c62","c68","c64","c66",
+  "c63","c65","c67","c69","c101","c100","c74","c73","c72","c71",
+  "c77","c78","c76","c75","c70",
+  "c19","c18","c31","c32","c14","c28","c33","c20","c30","c13"
+];
+// 依色系排序後的完整色票
+const BRAND_COLORS = COLOR_ORDER.map(id=>CARDS.find(c=>c.id===id)).filter(Boolean);
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const sel = { r1:[], r2:[], r3:[] };
+const MAX = 2;
+const history = ['pg-intro'];
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+document.getElementById('spotsNum').textContent = SPOTS_REMAINING;
+
+// Build all grids
+[1,2,3].forEach(r => buildGrid(r));
+
+// ── 攔截手機系統返回鍵 / 手勢 ──
+// 推一個 state，讓 popstate 可以被攔截到
+window.history.pushState({inApp: true}, '');
+window.addEventListener('popstate', function() {
+  // 立刻再 push 一個 state，避免下次返回直接離開
+  window.history.pushState({inApp: true}, '');
+  // 交給 app 內部導航處理
+  navBack();
+});
+
+// ═══════════════════════════════════════
+// PAGE NAVIGATION
+// ═══════════════════════════════════════
+function goTo(id){
+  document.querySelectorAll('.page').forEach(p=>{
+    if(p.id===id){ p.classList.add('active'); p.classList.remove('out'); }
+    else{ p.classList.remove('active'); p.classList.add('out'); }
+  });
+  const back = document.getElementById('navBack');
+  if(id==='pg-intro'){
+    back.classList.add('hidden');
+  } else {
+    back.classList.remove('hidden');
+  }
+  const homeBtn = document.getElementById('navHome');
+  if(id==='pg-r1'||id==='pg-r2'||id==='pg-r3'||id==='pg-service'||id==='pg-snap'||id==='pg-reveal'){
+    homeBtn.classList.remove('hidden');
+  } else {
+    homeBtn.classList.add('hidden');
+  }
+  // 過渡頁隱藏 nav
+  const mainNav = document.getElementById('mainNav');
+  if(id==='pg-revealing'){
+    mainNav.style.opacity='0';mainNav.style.pointerEvents='none';
+  } else {
+    mainNav.style.opacity='1';mainNav.style.pointerEvents='auto';
+  }
+  // 浮動列：round pages 才顯示，並同步狀態
+  const bar = document.getElementById('floatBar');
+  const isRound = id==='pg-r1'||id==='pg-r2'||id==='pg-r3';
+  if(isRound){
+    bar.classList.add('visible');
+    const rNum = parseInt(id.replace('pg-r',''));
+    updateFloatBar(rNum);
+  } else {
+    bar.classList.remove('visible');
+  }
+  // spotsNum sync
+  if(id==='pg-service'){
+    document.getElementById('spotsNum').textContent = SPOTS_REMAINING;
+  }
+}
+
+function navBack(){
+  history.pop();
+  const prev = history[history.length-1] || 'pg-intro';
+  goTo(prev);
+}
+
+function startFlow(){
+  history.push('pg-r1');
+  goTo('pg-r1');
+  window.scrollTo(0,0);
+}
+
+function goRound(n){
+  const id = 'pg-r'+n;
+  history.push(id);
+  goTo(id);
+  document.getElementById('pg-r'+n).scrollTo(0,0);
+}
+
+function advanceCarousel(){
+  const carousel = document.getElementById('snapCarousel');
+  if(!carousel) return;
+  const slideW = carousel.clientWidth;
+  const current = Math.round(carousel.scrollLeft / slideW);
+  const total = carousel.querySelectorAll('.snap-slide').length;
+  const next = (current + 1) % total;
+  carousel.scrollTo({left: next * slideW, behavior:'smooth'});
+}
+
+function goSnap(){
+  // 重新觸發過渡頁動畫
+  (function(){
+    var container = document.getElementById('revealingOrbs');
+    if(container){
+      var clone = container.cloneNode(true);
+      container.parentNode.replaceChild(clone, container);
+    }
+  })();
+  // 先進入「顯影中」過渡頁
+  history.push('pg-revealing');
+  goTo('pg-revealing');
+  buildSnap();
+  // 3秒後進入顯影結果頁
+  setTimeout(function(){
+    history.push('pg-reveal');
+    renderRevealPage();
+    goTo('pg-reveal');
+    document.getElementById('pg-reveal').scrollTo(0,0);
+  }, 3000);
+}
+
+function renderRevealPage(){
+  try{
+    var groups=[
+      {key:'r1',label:'現在的你'},
+      {key:'r2',label:'品牌現狀'},
+      {key:'r3',label:'品牌方向'}
+    ];
+    var revealColors=document.getElementById('revealColors');
+    if(!revealColors) return;
+    revealColors.innerHTML=groups.map(function(g,gi){
+      var swatches=sel[g.key].map(function(id){
+        var c=BRAND_COLORS.find(function(x){return x.id===id;});
+        if(!c) return '';
+        return '<div class="reveal-sw" style="height:42px;background:linear-gradient(158deg,'+c.bg[0]+','+c.bg[1]+')"></div>';
+      }).join('');
+      var arrow=gi<2?'<div class="reveal-arrow">&#8594;</div>':'';
+      return '<div class="reveal-group"><div class="reveal-swatches">'+swatches+'</div><div class="reveal-label">'+g.label+'</div></div>'+arrow;
+    }).join('');
+    var revealText=document.getElementById('revealText');
+    if(revealText) revealText.textContent=generateDiagnosis(sel);
+  }catch(e){ console.warn('renderRevealPage error:',e); }
+}
+
+function goToSnapFromReveal(){
+  history.push('pg-snap');
+  goTo('pg-snap');
+  document.getElementById('pg-snap').scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════
+// BUILD COLOR GRID
+// ═══════════════════════════════════════
+function buildGrid(r){
+  const grid = document.getElementById('grid'+r);
+  grid.innerHTML = '';
+  BRAND_COLORS.forEach(c=>{
+    const card = document.createElement('div');
+    card.className = 'c-card';
+    card.id = 'cc-r'+r+'-'+c.id;
+    card.innerHTML = `
+      <div class="c-card-bg" style="background:linear-gradient(158deg,${c.bg[0]},${c.bg[1]})"></div>
+      <div class="c-card-shine"></div>
+      <div class="c-card-overlay">
+        <div class="c-card-zh">${c.zh}</div>
+        <div class="c-card-feel">${c.q}</div>
+      </div>
+      <div class="c-card-check">✓</div>
+    `;
+    // touch vs scroll: 只有位移 < 12px 才算 tap
+    // 用 _wasTouched 旗標讓 click 在觸控裝置上不重複觸發
+    let _tx=0,_ty=0,_wasTouched=false;
+    card.addEventListener('touchstart',(e)=>{
+      _wasTouched=true;
+      _tx=e.touches[0].clientX; _ty=e.touches[0].clientY;
+    },{passive:true});
+    card.addEventListener('touchend',(e)=>{
+      const dx=Math.abs(e.changedTouches[0].clientX-_tx);
+      const dy=Math.abs(e.changedTouches[0].clientY-_ty);
+      e.preventDefault(); // 永遠阻止合成 click，不論移動距離
+      if(dx<12&&dy<12){toggleColor(r,c.id);}
+    },{passive:false});
+    card.addEventListener('click',()=>{
+      if(_wasTouched){_wasTouched=false;return;} // 觸控裝置不重複執行
+      toggleColor(r,c.id); // 桌機 mouse click 才執行
+    });
+    grid.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════
+// COLOR TOGGLE
+// ═══════════════════════════════════════
+function toggleColor(r, id){
+  const key = 'r'+r;
+  const arr = sel[key];
+  const idx = arr.indexOf(id);
+  if(idx > -1){
+    arr.splice(idx,1);
+  } else {
+    if(arr.length >= MAX){
+      showToast('最多選 '+MAX+' 個顏色');
+      return;
+    }
+    arr.push(id);
+  }
+  const card = document.getElementById('cc-r'+r+'-'+id);
+  if(card) card.classList.toggle('selected', arr.includes(id));
+  updateCount(r);
+  updateNext(r);
+}
+
+// 目前哪個 round 在顯示
+function currentRound(){
+  if(document.getElementById('pg-r1').classList.contains('active')) return 1;
+  if(document.getElementById('pg-r2').classList.contains('active')) return 2;
+  if(document.getElementById('pg-r3').classList.contains('active')) return 3;
+  return 0;
+}
+
+function updateCount(r){
+  const n = sel['r'+r].length;
+  const el = document.getElementById('count'+r);
+  if(el){
+    if(n===0) el.textContent='';
+    else if(n<MAX) el.textContent='已選 '+n+' 個，再選 '+(MAX-n)+' 個';
+    else el.textContent='已選好 ✦';
+  }
+  // 更新浮動列
+  updateFloatBar(r);
+}
+
+function updateFloatBar(r){
+  const n = sel['r'+r].length;
+  const ids = sel['r'+r];
+  const countEl = document.getElementById('floatCount');
+  const btn = document.getElementById('floatBtn');
+  const sw1 = document.getElementById('fSw1');
+  const sw2 = document.getElementById('fSw2');
+  if(!countEl||!btn||!sw1||!sw2) return;
+
+  // 文字
+  if(n===0) countEl.textContent='尚未選色';
+  else if(n<MAX) countEl.textContent='已選 '+n+' 個，再選 '+(MAX-n)+' 個';
+  else countEl.textContent='選好了！';
+
+  // 色塊預覽
+  [sw1,sw2].forEach((el,i)=>{
+    const id = ids[i];
+    const c = id ? CARDS.find(card=>card.id===id) : null;
+    if(c){
+      el.className='float-sw';
+      el.style.background='linear-gradient(158deg,'+c.bg[0]+','+c.bg[1]+')';
+      el.title=c.zh;
+    } else {
+      el.className='float-sw-empty';
+      el.style.background='';
+      el.title='';
+    }
+  });
+
+  // 按鈕
+  if(n>=MAX){
+    btn.classList.add('ready');
+    btn.textContent = r===3 ? '看色彩快照 ✦' : '確定 →';
+  } else {
+    btn.classList.remove('ready');
+    btn.textContent = '確定 →';
+  }
+}
+
+function updateNext(r){
+  // 浮動列已處理，此函式保留相容
+}
+
+function floatNext(){
+  const r = currentRound();
+  if(!r) return;
+  if(sel['r'+r].length < MAX) return;
+  if(r===3) goSnap();
+  else goRound(r+1);
+}
+
+// ═══════════════════════════════════════
+// COLOR DIAGNOSIS
+// ═══════════════════════════════════════
+function getHue(hex){
+  const r=parseInt(hex.slice(1,3),16)/255;
+  const g=parseInt(hex.slice(3,5),16)/255;
+  const b=parseInt(hex.slice(5,7),16)/255;
+  const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;
+  if(d<0.08) return -1;
+  let h;
+  if(max===r) h=((g-b)/d+6)%6;
+  else if(max===g) h=(b-r)/d+2;
+  else h=(r-g)/d+4;
+  return h*60;
+}
+function getTone(hex){
+  const h=getHue(hex);
+  if(h<0) return 'neutral';
+  if(h<40||h>=330) return 'warm';
+  if(h<70) return 'gold';
+  if(h<165) return 'green';
+  if(h<215) return 'teal';
+  if(h<270) return 'blue';
+  return 'purple';
+}
+function getDominantTone(ids){
+  const tones={};
+  ids.forEach(id=>{
+    const c=BRAND_COLORS.find(x=>x.id===id);
+    if(!c) return;
+    const t=getTone(c.hex);
+    tones[t]=(tones[t]||0)+1;
+  });
+  return Object.entries(tones).sort((a,b)=>b[1]-a[1])[0]?.[0]||'neutral';
+}
+function generateDiagnosis(sel){
+  const t1=getDominantTone(sel.r1);
+  const t2=getDominantTone(sel.r2);
+  const t3=getDominantTone(sel.r3);
+  const label={
+    warm:'溫暖活力',gold:'豐盛穩健',green:'自然成長',
+    teal:'清透沉靜',blue:'深邃可信',purple:'獨特神秘',neutral:'輕盈留白'
+  };
+  const allSame=t1===t2&&t2===t3;
+  const r1r2=t1===t2, r2r3=t2===t3, r1r3=t1===t3;
+  if(allSame)
+    return `你的三組選色都帶著「${label[t1]}」的氣質——是你已經很清楚自己的品牌方向了，還是有些可能性還沒被探索到呢？`;
+  if(r1r2&&!r2r3)
+    return `你這個人和你的品牌現狀很接近，但你想去的方向帶著「${label[t3]}」的能量——是什麼讓你想往那個方向走？`;
+  if(!r1r2&&r1r3)
+    return `你想要的品牌方向和你本來的樣子很相近，但現在的品牌好像還沒跟上——是什麼讓目前的視覺還沒完全表達出你呢？`;
+  if(!r1r2&&r2r3)
+    return `你的品牌現狀和你想要的方向是一致的，但跟你這個人有些距離——這個落差是有意保留的，還是還沒機會去調整呢？`;
+  return `你的三組選色走向都不一樣，這通常代表你正在一個很有意思的轉折點——你最好奇的，是哪一個方向的故事？`;
+}
+function renderDiagnosis(){
+  try{
+    // colors row
+    const diagColors=document.getElementById('diagColors');
+    if(!diagColors) return;
+    const groups=[
+      {key:'r1',label:'現在的你'},
+      {key:'r2',label:'品牌現狀'},
+      {key:'r3',label:'品牌方向'}
+    ];
+    diagColors.innerHTML=groups.map((g,gi)=>{
+      const swatches=sel[g.key].map(id=>{
+        const c=BRAND_COLORS.find(x=>x.id===id);
+        if(!c) return '';
+        return `<div class="diag-sw" style="height:42px;background:linear-gradient(158deg,${c.bg[0]},${c.bg[1]})"></div>`;
+      }).join('');
+      const arrow=gi<2?`<div class="diag-arrow">→</div>`:'';
+      return `<div class="diag-group"><div class="diag-swatches">${swatches}</div><div class="diag-label">${g.label}</div></div>${arrow}`;
+    }).join('');
+    // text
+    const diagText=document.getElementById('diagText');
+    if(diagText) diagText.textContent=generateDiagnosis(sel);
+    // bio photo
+    const servicePhoto=document.querySelector('#pg-service .hannah-photo img');
+    const snapImg=document.getElementById('snapBioImg');
+    if(servicePhoto&&snapImg) snapImg.src=servicePhoto.src;
+  }catch(e){ console.warn('renderDiagnosis error:',e); }
+}
+
+// ═══════════════════════════════════════
+// BUILD SNAPSHOT
+// ═══════════════════════════════════════
+function buildSnap(){
+  const carousel = document.getElementById('snapCarousel');
+  carousel.innerHTML = '';
+  const dots = document.querySelectorAll('#carouselDots .c-dot');
+
+  const groups = [
+    { key:'r1', eyebrow:'Round 01', title:'現在的你' },
+    { key:'r2', eyebrow:'Round 02', title:'品牌現狀' },
+    { key:'r3', eyebrow:'Round 03', title:'品牌方向' },
+  ];
+
+  groups.forEach((g,i)=>{
+    const ids = sel[g.key];
+    const colors = ids.map(id=>BRAND_COLORS.find(c=>c.id===id)).filter(Boolean);
+    const texts = colors.map(c=> c.b||'').filter(Boolean);
+
+    const slide = document.createElement('div');
+    slide.className = 'snap-slide';
+
+    const rowsHTML = colors.map(c=>{
+      const text = c.b||'';
+      return `
+        <div class="slide-color-row">
+          <div class="slide-sw-wrap">
+            <div class="slide-sw" style="background:linear-gradient(158deg,${c.bg[0]},${c.bg[1]})">
+              <div class="slide-sw-shine"></div>
+            </div>
+            <div class="slide-sw-name">${c.zh}</div>
+          </div>
+          <div class="slide-text-item">
+            ${text ? `<div class="slide-text">${text}</div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+
+    slide.innerHTML = `
+      <div class="slide-header">
+        <div class="slide-eyebrow">${g.eyebrow}</div>
+        <div class="slide-title">${g.title}</div>
+      </div>
+      <div class="slide-pair">${rowsHTML}</div>
+    `;
+    carousel.appendChild(slide);
+  });
+
+  // 滑動時更新 dots
+  carousel.addEventListener('scroll',()=>{
+    const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
+    dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+  },{passive:true});
+
+  // diagnosis now on separate reveal page
+}
+
+function goHome(){
+  sel.r1=[];sel.r2=[];sel.r3=[];
+  // 清除所有色塊的 selected 狀態
+  document.querySelectorAll('.c-card.selected').forEach(c=>c.classList.remove('selected'));
+  [1,2,3].forEach(r=>{
+    const el=document.getElementById('count'+r);
+    if(el) el.textContent='';
+  });
+  history.length = 0;
+  goTo('pg-intro');
+  document.getElementById('pg-intro').scrollTo(0,0);
+}
+
+function restartFlow(){
+  sel.r1=[];sel.r2=[];sel.r3=[];
+  document.querySelectorAll('.c-card.selected').forEach(c=>c.classList.remove('selected'));
+  [1,2,3].forEach(r=>{
+    const el=document.getElementById('count'+r);
+    if(el) el.textContent='';
+  });
+  history.length = 0;
+  history.push('pg-intro');
+  history.push('pg-r1');
+  goTo('pg-r1');
+  document.getElementById('pg-r1').scrollTo(0,0);
+}
+
+function goToService(){
+  history.push('pg-service');
+  goTo('pg-service');
+  document.getElementById('pg-service').scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════
+// DOWNLOAD SNAPSHOT (Canvas)
+// ═══════════════════════════════════════
+async function downloadSnap(){
+  showToast('生成快照中… ✦');
+  try{
+    await document.fonts.ready;
+  }catch(e){}
+
+  const W=1080, H=1200;
+  const cv = document.createElement('canvas');
+  cv.width=W; cv.height=H;
+  const ctx = cv.getContext('2d');
+
+  // Background
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#FAF7F2');
+  bg.addColorStop(1,'#EDE3D2');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // Grain
+  try{
+    const gd=ctx.createImageData(W,H); const ga=gd.data;
+    for(let i=0;i<ga.length;i+=4)
+      if(Math.random()>.6){ga[i]=120;ga[i+1]=90;ga[i+2]=50;ga[i+3]=4;}
+    ctx.putImageData(gd,0,0);
+  }catch(e){}
+
+  // Header
+  ctx.textAlign='center';
+  ctx.font='300 28px "EB Garamond",serif';
+  ctx.fillStyle='rgba(184,144,74,0.6)';
+  ctx.fillText('BRAND COLOR SNAPSHOT · HANNAH CHEN', W/2, 80);
+
+  ctx.font='400 72px "Noto Serif TC",serif';
+  ctx.fillStyle='rgba(42,28,14,0.86)';
+  ctx.fillText('品牌色彩快照', W/2, 168);
+
+  ctx.font='300 28px "Noto Serif TC",serif';
+  ctx.fillStyle='rgba(106,80,40,0.45)';
+  ctx.fillText('三組顏色，看見你的品牌輪廓', W/2, 218);
+
+  // Gold line
+  const gl=ctx.createLinearGradient(W*0.2,240,W*0.8,240);
+  gl.addColorStop(0,'rgba(184,144,74,0)');
+  gl.addColorStop(0.3,'rgba(184,144,74,0.35)');
+  gl.addColorStop(0.7,'rgba(184,144,74,0.35)');
+  gl.addColorStop(1,'rgba(184,144,74,0)');
+  ctx.strokeStyle=gl; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(W*0.2,248); ctx.lineTo(W*0.8,248); ctx.stroke();
+
+  // Color groups
+  const groups = [
+    { key:'r1', label:'現在的你' },
+    { key:'r2', label:'品牌現狀' },
+    { key:'r3', label:'品牌方向' },
+  ];
+  const colW = 286, colGap = 48;
+  const totalW = colW*3 + colGap*2;
+  const startX = (W - totalW) / 2;
+  const swatchH = 380, swatchGap = 12;
+  const swatchW = (colW - swatchGap) / 2;
+  const groupTopY = 296;
+  const cornerR = 20;
+
+  function rr(c,x,y,w,h,r){
+    c.beginPath();
+    c.moveTo(x+r,y);c.lineTo(x+w-r,y);
+    c.arcTo(x+w,y,x+w,y+r,r);c.lineTo(x+w,y+h-r);
+    c.arcTo(x+w,y+h,x+w-r,y+h,r);c.lineTo(x+r,y+h);
+    c.arcTo(x,y+h,x,y+h-r,r);c.lineTo(x,y+r);
+    c.arcTo(x,y,x+r,y,r);c.closePath();
+  }
+
+  groups.forEach((g,gi)=>{
+    const ids = sel[g.key];
+    const colors = ids.map(id=>BRAND_COLORS.find(c=>c.id===id)).filter(Boolean);
+    const colX = startX + gi*(colW+colGap);
+
+    // Group label
+    ctx.textAlign='center';
+    ctx.font='300 22px "EB Garamond",serif';
+    ctx.fillStyle='rgba(184,144,74,0.65)';
+    ctx.fillText(g.label, colX+colW/2, groupTopY+24);
+
+    // Two swatches
+    colors.forEach((c,ci)=>{
+      const sx = colX + ci*(swatchW+swatchGap);
+      const sy = groupTopY + 52;
+
+      // Gradient fill
+      const grad = ctx.createLinearGradient(sx,sy,sx,sy+swatchH);
+      grad.addColorStop(0, c.bg[0]);
+      grad.addColorStop(1, c.bg[1]);
+      rr(ctx,sx,sy,swatchW,swatchH,cornerR);
+      ctx.fillStyle=grad; ctx.fill();
+
+      // Shine
+      const shine = ctx.createRadialGradient(sx+swatchW*0.38,sy+swatchH*0.28,0,sx+swatchW*0.38,sy+swatchH*0.28,swatchW*0.7);
+      shine.addColorStop(0,'rgba(255,255,255,0.28)');
+      shine.addColorStop(1,'rgba(255,255,255,0)');
+      rr(ctx,sx,sy,swatchW,swatchH,cornerR);
+      ctx.fillStyle=shine; ctx.fill();
+
+      // Name
+      ctx.save();
+      rr(ctx,sx,sy,swatchW,swatchH,cornerR); ctx.clip();
+      const nameBg = ctx.createLinearGradient(sx,sy+swatchH-80,sx,sy+swatchH);
+      nameBg.addColorStop(0,'rgba(0,0,0,0)');
+      nameBg.addColorStop(1,'rgba(0,0,0,0.45)');
+      ctx.fillStyle=nameBg; ctx.fillRect(sx,sy+swatchH-80,swatchW,80);
+      ctx.textAlign='center';
+      ctx.font='400 22px "Noto Serif TC",serif';
+      ctx.fillStyle='rgba(255,255,255,0.9)';
+      ctx.fillText(c.zh, sx+swatchW/2, sy+swatchH-22);
+      ctx.restore();
+    });
+  });
+
+  // Bottom divider
+  const divY = groupTopY + 52 + swatchH + 56;
+  const gl2=ctx.createLinearGradient(W*0.2,divY,W*0.8,divY);
+  gl2.addColorStop(0,'rgba(184,144,74,0)');
+  gl2.addColorStop(0.3,'rgba(184,144,74,0.28)');
+  gl2.addColorStop(0.7,'rgba(184,144,74,0.28)');
+  gl2.addColorStop(1,'rgba(184,144,74,0)');
+  ctx.strokeStyle=gl2; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(W*0.2,divY); ctx.lineTo(W*0.8,divY); ctx.stroke();
+
+  // Footer
+  const now=new Date();
+  ctx.textAlign='center';
+  ctx.font='300 22px "Noto Serif TC",serif';
+  ctx.fillStyle='rgba(184,144,74,0.42)';
+  ctx.fillText(`${now.getFullYear()} · ${String(now.getMonth()+1).padStart(2,'0')}`, W/2, divY+44);
+  ctx.font='300 20px "Noto Serif TC",serif';
+  ctx.fillStyle='rgba(154,138,118,0.32)';
+  ctx.fillText('品牌美感諮詢 · Hannah Chen · @hannahchen0505949', W/2, divY+80);
+
+  // CTA block
+  const ctaY = divY + 148;
+  // Soft ornament dots
+  ctx.fillStyle='rgba(184,144,74,0.35)';
+  for(let di=0;di<3;di++){
+    ctx.beginPath();
+    ctx.arc(W/2 + (di-1)*18, ctaY-28, 3, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.font='300 28px "Noto Serif TC",serif';
+  ctx.fillStyle='rgba(50,35,18,0.52)';
+  ctx.fillText('想更深入了解自己與品牌的現況', W/2, ctaY);
+  ctx.fillText('或找到屬於你的品牌前進方向？', W/2, ctaY+48);
+  ctx.font='400 26px "Noto Serif TC",serif';
+  ctx.fillStyle='rgba(184,144,74,0.78)';
+  ctx.fillText('✦  歡迎預約一對一品牌美感諮詢  ✦', W/2, ctaY+108);
+
+  // Download
+  const ua=navigator.userAgent||'';
+  const isIOS=/iPad|iPhone|iPod/.test(ua)&&!window.MSStream;
+  const isAndroid=/Android/i.test(ua);
+  const du=cv.toDataURL('image/png',1.0);
+
+  if(isIOS||isAndroid){
+    // Show overlay for mobile long-press save
+    const old=document.getElementById('snapImgOverlay');
+    if(old) old.remove();
+    const ov=document.createElement('div');
+    ov.id='snapImgOverlay';
+    ov.style.cssText=`position:fixed;top:0;left:0;right:0;bottom:0;z-index:9000;background:rgba(30,22,14,.95);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;padding:32px 20px 48px;`;
+    ov.innerHTML=`
+      <div style="font-family:'Noto Serif TC',serif;font-size:.85rem;letter-spacing:.1em;color:#fff;margin-bottom:8px;">
+        ${isAndroid ? '👇 長按圖片 → 儲存圖片' : '長按圖片 → 加入照片'}
+      </div>
+      <div style="font-size:.62rem;color:rgba(255,255,255,.4);margin-bottom:20px;letter-spacing:.08em;">品牌色彩快照</div>
+    `;
+    const img=document.createElement('img');
+    img.src=du;
+    img.style.cssText=`max-width:100%;width:min(360px,88vw);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.55);-webkit-touch-callout:default;touch-action:auto;user-select:auto;-webkit-user-select:auto;`;
+    const closeBtn=document.createElement('button');
+    closeBtn.textContent='關閉';
+    closeBtn.style.cssText=`margin-top:24px;font-family:'Noto Serif TC',serif;font-size:.65rem;letter-spacing:.3em;color:rgba(255,255,255,.45);background:transparent;border:1px solid rgba(255,255,255,.2);padding:9px 28px;border-radius:60px;cursor:pointer;`;
+    closeBtn.onclick=()=>ov.remove();
+    ov.appendChild(img);
+    ov.appendChild(closeBtn);
+    document.body.appendChild(ov);
+  } else {
+    const a=document.createElement('a');
+    a.href=du; a.download='品牌色彩快照.png';
+    document.body.appendChild(a); a.click();
+    setTimeout(()=>a.remove(),500);
+    showToast('品牌色彩快照已下載 ✦');
+  }
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function showToast(msg){
+  const t=document.getElementById('toast');
+  if(!t) return;
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>

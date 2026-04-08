@@ -406,10 +406,93 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
 .round-q{
   font-size:1.18rem;font-weight:400;letter-spacing:.06em;
   color:#5C3D1E;line-height:1.75;margin-bottom:6px;
+  position:relative;
+  padding:18px 24px;
+}
+/* 問題背後的聚光暈染 */
+.round-q::before{
+  content:'';position:absolute;
+  top:50%;left:50%;
+  width:280px;height:120px;
+  transform:translate(-50%,-50%) scale(0);
+  border-radius:50%;
+  background:radial-gradient(ellipse,
+    rgba(245,225,185,.55) 0%,
+    rgba(248,232,200,.25) 40%,
+    transparent 70%);
+  opacity:0;pointer-events:none;
+  z-index:-1;
+}
+/* 問題下方金色短線 */
+.round-q::after{
+  content:'';position:absolute;
+  bottom:0;left:50%;
+  width:0;height:1.5px;
+  transform:translateX(-50%);
+  background:linear-gradient(to right,transparent,rgba(184,144,74,.45),transparent);
+  pointer-events:none;
 }
 .round-hint{
   font-size:.8rem;letter-spacing:.14em;
   color:rgba(42,28,14,.55);margin-bottom:4px;
+}
+
+/* Round page entrance animations */
+.round-page.active .round-label{
+  animation:roundLabelIn .8s .1s both;
+}
+.round-page.active .round-progress{
+  animation:roundFadeUp .6s .2s both;
+}
+/* 問題主體：先等一拍，再從模糊中浮現 */
+.round-page.active .round-q{
+  animation:roundQTextIn 1.2s .4s cubic-bezier(.25,.46,.45,.94) both;
+}
+/* 背後光暈：比文字早一點開始暈開 */
+.round-page.active .round-q::before{
+  animation:roundQGlow 2s .3s cubic-bezier(.16,1,.3,1) both;
+}
+/* 金色底線：文字出現後才劃出 */
+.round-page.active .round-q::after{
+  animation:roundQLine 1s 1.2s cubic-bezier(.25,.46,.45,.94) both;
+}
+.round-page.active .round-hint{
+  animation:roundFadeUp .6s 1.6s both;
+}
+.round-page.active .round-sel-count{
+  animation:roundFadeUp .5s 1.8s both;
+}
+/* 色票格延遲出現，讓問題先吸引注意力 */
+.round-page.active .color-grid{
+  animation:roundGridIn .8s .9s both;
+}
+
+@keyframes roundLabelIn{
+  from{opacity:0;letter-spacing:.8em;filter:blur(2px)}
+  to{opacity:1;letter-spacing:.48em;filter:blur(0)}
+}
+/* 問題文字：從模糊中緩慢顯現 */
+@keyframes roundQTextIn{
+  from{opacity:0;transform:translateY(16px);filter:blur(6px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+/* 問題背後光暈：從無到有暈開 */
+@keyframes roundQGlow{
+  from{transform:translate(-50%,-50%) scale(.3);opacity:0}
+  to{transform:translate(-50%,-50%) scale(1);opacity:1}
+}
+/* 金色底線從中心向兩邊展開 */
+@keyframes roundQLine{
+  from{width:0;opacity:0}
+  to{width:120px;opacity:1}
+}
+@keyframes roundFadeUp{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes roundGridIn{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
 }
 .round-sel-count{
   font-size:.78rem;letter-spacing:.12em;
@@ -606,10 +689,12 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
   font-style:italic;
 }
 .snap-btn-group{
-  display:flex;flex-direction:column;gap:8px;width:100%;margin-bottom:16px;
+  display:flex;flex-direction:column;gap:10px;
+  width:100%;max-width:280px;margin:0 auto 16px;
+  align-items:center;
 }
 .see-more-btn{
-  display:block;margin:0 auto;width:100%;
+  display:block;width:100%;
   font-family:'Noto Serif TC',serif;font-size:.72rem;letter-spacing:.15em;
   color:#fff;
   background:linear-gradient(135deg,#7A5830,#B8854A);
@@ -643,12 +728,12 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
 
 /* Download snapshot btn */
 .dl-snap-btn{
-  display:block;margin:0 auto;width:100%;
-  font-family:'Noto Serif TC',serif;font-size:.68rem;letter-spacing:.15em;
-  color:rgba(90,60,20,.85);
-  background:rgba(184,144,74,.15);
-  border:1px solid rgba(184,144,74,.4);
-  padding:11px 28px;border-radius:60px;cursor:pointer;
+  display:block;width:100%;
+  font-family:'Noto Serif TC',serif;font-size:.66rem;letter-spacing:.12em;
+  color:rgba(90,60,20,.7);
+  background:rgba(184,144,74,.08);
+  border:1px solid rgba(184,144,74,.3);
+  padding:9px 24px;border-radius:60px;cursor:pointer;
   transition:all .28s;
 }
 @media(hover:hover){.dl-snap-btn:hover{background:rgba(184,144,74,.25);}}
@@ -930,7 +1015,7 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
    REVEALING PAGE (過渡頁)
 ══════════════════════════ */
 #pg-revealing{
-  background:#FBF8F3;
+  background:#FAF7F2;
   justify-content:center;
   overflow:hidden;
 }
@@ -944,191 +1029,205 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
   position:absolute;top:0;left:0;right:0;bottom:0;z-index:0;
   overflow:hidden;
 }
-/* 中心主光暈 - 明亮奶金 */
+
+/*
+  所有光暈共用策略：
+  - 只用 from/to（或 0%/100%），靠長 duration + ease 曲線做出自然緩慢感
+  - 不設中間 keyframe，避免截點突兀
+  - 不同光暈用不同 delay 錯開，產生先後暈開的層次
+*/
+
+/* 底層大範圍暈染 — 最先出現，定調整體溫度 */
 .rev-halo{
   position:absolute;border-radius:50%;
-  top:42%;left:50%;
-  width:500px;height:500px;
-  transform:translate(-50%,-50%) scale(0);
+  top:44%;left:50%;
+  width:min(650px,140vw);height:min(650px,140vw);
+  transform:translate(-50%,-50%) scale(.15);
+  opacity:0;
   background:radial-gradient(circle,
-    rgba(255,240,205,.85) 0%,
-    rgba(252,230,190,.55) 20%,
-    rgba(245,220,172,.28) 45%,
-    transparent 70%);
-  animation:haloSpread 3.5s .2s cubic-bezier(.25,.46,.45,.94) forwards;
+    rgba(248,232,200,.7) 0%,
+    rgba(245,225,190,.45) 25%,
+    rgba(242,218,180,.2) 50%,
+    rgba(240,215,175,.06) 70%,
+    transparent 85%);
+  animation:revGrow 6s .2s cubic-bezier(.16,1,.3,1) forwards;
 }
-@keyframes haloSpread{
-  0%{transform:translate(-50%,-50%) scale(0);opacity:0}
-  30%{opacity:.6}
-  60%{transform:translate(-50%,-50%) scale(.75);opacity:.85}
-  100%{transform:translate(-50%,-50%) scale(1);opacity:1}
-}
-/* 上方暖粉光暈 */
+/* 右上 — 帶一點杏桃暖意 */
 .rev-bloom-1{
   position:absolute;border-radius:50%;
-  top:34%;left:38%;
-  width:320px;height:320px;
-  transform:translate(-50%,-50%) scale(0);
+  top:30%;left:62%;
+  width:min(420px,90vw);height:min(420px,90vw);
+  transform:translate(-50%,-50%) scale(.1);opacity:0;
   background:radial-gradient(circle,
-    rgba(255,215,180,.55) 0%,
-    rgba(252,200,165,.25) 35%,
-    transparent 68%);
-  animation:bloomIn 3s .6s ease-out forwards;
+    rgba(245,208,175,.5) 0%,
+    rgba(248,218,190,.25) 35%,
+    rgba(250,228,205,.08) 60%,
+    transparent 80%);
+  animation:revGrow 6.5s .8s cubic-bezier(.16,1,.3,1) forwards;
 }
-/* 右下杏色光暈 */
+/* 左下 — 柔和金調 */
 .rev-bloom-2{
   position:absolute;border-radius:50%;
-  top:48%;left:62%;
-  width:340px;height:340px;
-  transform:translate(-50%,-50%) scale(0);
+  top:56%;left:35%;
+  width:min(400px,85vw);height:min(400px,85vw);
+  transform:translate(-50%,-50%) scale(.1);opacity:0;
   background:radial-gradient(circle,
-    rgba(252,228,195,.5) 0%,
-    rgba(248,218,175,.25) 35%,
-    transparent 65%);
-  animation:bloomIn 3.2s .9s ease-out forwards;
+    rgba(245,225,180,.45) 0%,
+    rgba(248,230,195,.22) 35%,
+    rgba(250,235,205,.07) 60%,
+    transparent 80%);
+  animation:revGrow 7s 1.4s cubic-bezier(.16,1,.3,1) forwards;
 }
-/* 左下淡金光暈 */
+/* 中偏右 — 淡暖粉，增加膚色層次 */
 .rev-bloom-3{
   position:absolute;border-radius:50%;
-  top:50%;left:36%;
-  width:280px;height:280px;
-  transform:translate(-50%,-50%) scale(0);
+  top:42%;left:58%;
+  width:min(340px,72vw);height:min(340px,72vw);
+  transform:translate(-50%,-50%) scale(.1);opacity:0;
   background:radial-gradient(circle,
-    rgba(248,222,175,.45) 0%,
-    rgba(242,212,158,.18) 40%,
+    rgba(248,215,195,.38) 0%,
+    rgba(250,225,208,.18) 35%,
+    transparent 70%);
+  animation:revGrow 6s 2s cubic-bezier(.16,1,.3,1) forwards;
+}
+/* 左上 — 淡琥珀，與右邊形成冷暖對比 */
+.rev-bloom-4{
+  position:absolute;border-radius:50%;
+  top:32%;left:30%;
+  width:min(320px,68vw);height:min(320px,68vw);
+  transform:translate(-50%,-50%) scale(.1);opacity:0;
+  background:radial-gradient(circle,
+    rgba(242,218,168,.4) 0%,
+    rgba(245,225,180,.18) 38%,
+    transparent 70%);
+  animation:revGrow 5.5s 2.6s cubic-bezier(.16,1,.3,1) forwards;
+}
+/* 右下角 — 淡蜜桃補色 */
+.rev-bloom-5{
+  position:absolute;border-radius:50%;
+  top:62%;left:65%;
+  width:min(300px,64vw);height:min(300px,64vw);
+  transform:translate(-50%,-50%) scale(.1);opacity:0;
+  background:radial-gradient(circle,
+    rgba(250,212,185,.35) 0%,
+    rgba(252,222,200,.15) 38%,
+    transparent 70%);
+  animation:revGrow 6s 3.2s cubic-bezier(.16,1,.3,1) forwards;
+}
+/* 中下 — 很淡的香檳白，提亮中心 */
+.rev-bloom-6{
+  position:absolute;border-radius:50%;
+  top:50%;left:48%;
+  width:min(380px,80vw);height:min(380px,80vw);
+  transform:translate(-50%,-50%) scale(.1);opacity:0;
+  background:radial-gradient(circle,
+    rgba(255,245,228,.4) 0%,
+    rgba(252,240,220,.18) 35%,
     transparent 68%);
-  animation:bloomIn 2.8s 1.3s ease-out forwards;
+  animation:revGrow 7s 3.8s cubic-bezier(.16,1,.3,1) forwards;
 }
-@keyframes bloomIn{
-  0%{transform:translate(-50%,-50%) scale(0);opacity:0}
-  40%{opacity:.5}
-  70%{transform:translate(-50%,-50%) scale(.85);opacity:.8}
-  100%{transform:translate(-50%,-50%) scale(1);opacity:1}
+
+/* 唯一的展開動畫 — from/to 只有起點終點，靠 cubic-bezier 做出緩進緩出 */
+@keyframes revGrow{
+  from{transform:translate(-50%,-50%) scale(.15);opacity:0}
+  to{transform:translate(-50%,-50%) scale(1);opacity:1}
 }
-/* 呼吸脈動光圈 */
+
+/* 呼吸脈動 — 最慢的律動，像心跳 */
 .rev-breathe{
   position:absolute;border-radius:50%;
   top:46%;left:50%;
-  width:220px;height:220px;
+  width:min(260px,55vw);height:min(260px,55vw);
   transform:translate(-50%,-50%);
   background:radial-gradient(circle,
-    rgba(255,242,215,.35) 0%,
-    rgba(248,230,195,.12) 50%,
-    transparent 70%);
-  animation:breathe 3s 1.5s ease-in-out infinite;
+    rgba(252,240,218,.4) 0%,
+    rgba(250,235,210,.15) 45%,
+    transparent 75%);
+  animation:breathe 5.5s 3s ease-in-out infinite;
 }
 @keyframes breathe{
-  0%,100%{transform:translate(-50%,-50%) scale(.8);opacity:.3}
-  50%{transform:translate(-50%,-50%) scale(1.4);opacity:.7}
+  from{transform:translate(-50%,-50%) scale(.9);opacity:.2}
+  50%{transform:translate(-50%,-50%) scale(1.25);opacity:.55}
+  to{transform:translate(-50%,-50%) scale(.9);opacity:.2}
 }
-/* 暈染漂移 - 緩慢飄動的光斑 */
+
+/* 漂移光斑 — 極慢飄動 */
 .rev-drift-1{
   position:absolute;border-radius:50%;
-  top:32%;left:55%;
-  width:160px;height:160px;
+  top:35%;left:55%;
+  width:min(190px,40vw);height:min(190px,40vw);
   background:radial-gradient(circle,
-    rgba(255,228,195,.25) 0%,
-    transparent 65%);
-  opacity:.4;
-  animation:drift1 8s 2s ease-in-out infinite;
+    rgba(250,228,198,.28) 0%,
+    transparent 70%);
+  opacity:0;
+  animation:revGrow 5s 2s cubic-bezier(.16,1,.3,1) forwards, driftFloat 16s 4s ease-in-out infinite;
 }
 .rev-drift-2{
   position:absolute;border-radius:50%;
-  top:50%;left:40%;
-  width:140px;height:140px;
+  top:52%;left:38%;
+  width:min(170px,36vw);height:min(170px,36vw);
   background:radial-gradient(circle,
-    rgba(252,235,205,.2) 0%,
-    transparent 65%);
-  opacity:.3;
-  animation:drift1 9s 2.5s ease-in-out infinite reverse;
+    rgba(248,225,195,.22) 0%,
+    transparent 70%);
+  opacity:0;
+  animation:revGrow 5s 2.8s cubic-bezier(.16,1,.3,1) forwards, driftFloat 18s 5s ease-in-out infinite reverse;
 }
-@keyframes drift1{
-  0%,100%{transform:translate(0,0)}
-  50%{transform:translate(12px,-12px)}
+@keyframes driftFloat{
+  from{transform:translate(0,0)}
+  50%{transform:translate(12px,-10px)}
+  to{transform:translate(0,0)}
 }
-/* 額外色彩層次 - 蜜桃 */
-.rev-bloom-4{
-  position:absolute;border-radius:50%;
-  top:38%;left:28%;
-  width:240px;height:240px;
-  transform:translate(-50%,-50%) scale(0);
-  background:radial-gradient(circle,
-    rgba(255,205,175,.45) 0%,
-    rgba(252,195,160,.15) 40%,
-    transparent 68%);
-  animation:bloomIn 3s 1.6s ease-out forwards;
-}
-/* 額外色彩層次 - 香檳金 */
-.rev-bloom-5{
-  position:absolute;border-radius:50%;
-  top:28%;left:60%;
-  width:220px;height:220px;
-  transform:translate(-50%,-50%) scale(0);
-  background:radial-gradient(circle,
-    rgba(255,235,200,.45) 0%,
-    rgba(250,225,185,.18) 40%,
-    transparent 68%);
-  animation:bloomIn 2.6s 2s ease-out forwards;
-}
-/* 額外色彩層次 - 暖粉光 */
-.rev-bloom-6{
-  position:absolute;border-radius:50%;
-  top:55%;left:52%;
-  width:300px;height:300px;
-  transform:translate(-50%,-50%) scale(0);
-  background:radial-gradient(circle,
-    rgba(255,218,198,.32) 0%,
-    rgba(252,208,182,.12) 40%,
-    transparent 65%);
-  animation:bloomIn 3.4s 1.8s ease-out forwards;
-}
-/* 外圈柔光環 */
+
+/* 外圈柔光環 — 慢慢擴散消逝 */
 .rev-ring-soft{
   position:absolute;border-radius:50%;
-  top:42%;left:50%;
-  width:340px;height:340px;
-  transform:translate(-50%,-50%) scale(0);
-  border:1px solid rgba(240,215,170,.2);
-  animation:ringSoft 4s .5s ease-out forwards;
+  top:44%;left:50%;
+  width:min(360px,76vw);height:min(360px,76vw);
+  transform:translate(-50%,-50%) scale(.2);
+  border:1px solid rgba(245,228,195,.15);
+  opacity:0;
+  animation:ringFade 8s 1.5s cubic-bezier(.16,1,.3,1) forwards;
 }
 .rev-ring-soft-2{
   position:absolute;border-radius:50%;
-  top:42%;left:50%;
-  width:480px;height:480px;
-  transform:translate(-50%,-50%) scale(0);
-  border:1px solid rgba(240,215,170,.1);
-  animation:ringSoft 4.5s 1s ease-out forwards;
+  top:44%;left:50%;
+  width:min(520px,110vw);height:min(520px,110vw);
+  transform:translate(-50%,-50%) scale(.2);
+  border:1px solid rgba(245,228,195,.08);
+  opacity:0;
+  animation:ringFade 10s 3s cubic-bezier(.16,1,.3,1) forwards;
 }
-@keyframes ringSoft{
-  0%{transform:translate(-50%,-50%) scale(0);opacity:0}
-  50%{opacity:1}
-  100%{transform:translate(-50%,-50%) scale(1);opacity:0}
+@keyframes ringFade{
+  from{transform:translate(-50%,-50%) scale(.2);opacity:0}
+  40%{opacity:.8}
+  to{transform:translate(-50%,-50%) scale(1);opacity:0}
 }
+
 .revealing-color-orbs{
   position:relative;width:1px;height:1px;margin-bottom:0;z-index:2;
 }
 .revealing-text{
   font-family:'Noto Serif TC',serif;font-size:1rem;font-weight:400;
-  letter-spacing:.18em;color:rgba(42,28,14,.7);
+  letter-spacing:.18em;color:rgba(42,28,14,.6);
   line-height:2;
-  animation:revealTextIn 1.5s .3s both;
+  animation:revTextIn 3s 2s cubic-bezier(.25,.46,.45,.94) both;
 }
 .revealing-sub{
   font-family:'EB Garamond',serif;font-size:.6rem;font-weight:400;
-  letter-spacing:.5em;color:rgba(184,144,74,.45);
+  letter-spacing:.5em;color:rgba(184,144,74,.38);
   text-transform:uppercase;margin-top:16px;
-  animation:revealTextIn 1.5s .8s both;
+  animation:revTextIn 2.5s 3.2s cubic-bezier(.25,.46,.45,.94) both;
 }
-@keyframes revealTextIn{
-  from{opacity:0;transform:translateY(12px);filter:blur(3px)}
+@keyframes revTextIn{
+  from{opacity:0;transform:translateY(10px);filter:blur(3px)}
   to{opacity:1;transform:translateY(0);filter:blur(0)}
 }
 .revealing-line{
   width:40px;height:1px;margin:24px auto 0;
-  background:linear-gradient(to right,transparent,rgba(184,144,74,.35),transparent);
-  animation:revealLineGrow 2s 1s both;
+  background:linear-gradient(to right,transparent,rgba(184,144,74,.28),transparent);
+  animation:revLineGrow 3.5s 4s cubic-bezier(.25,.46,.45,.94) both;
 }
-@keyframes revealLineGrow{
+@keyframes revLineGrow{
   from{width:0;opacity:0}
   to{width:40px;opacity:1}
 }
@@ -1138,8 +1237,9 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
 ══════════════════════════ */
 #pg-reveal{
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(232,212,180,.45) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(220,195,158,.3) 0%, transparent 45%),
+    radial-gradient(ellipse at 30% 20%, rgba(228,195,140,.55) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(220,180,130,.4) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(240,215,170,.3) 0%, transparent 60%),
     #FAF7F2;
 }
 .reveal-inner{
@@ -1247,7 +1347,9 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
 }
 @media(hover:hover){.reveal-share-btn:hover{background:rgba(184,144,74,.18);transform:translateY(-1px);}}
 .reveal-btn-group{
-  display:flex;flex-direction:column;gap:8px;width:100%;
+  display:flex;flex-direction:column;gap:10px;
+  width:100%;max-width:280px;margin:0 auto;
+  align-items:center;
 }
 .reveal-continue-btn{
   display:block;width:100%;
@@ -1319,11 +1421,12 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
   to{opacity:1;transform:translateY(0) scale(1);box-shadow:0 10px 36px rgba(80,50,20,.12)}
 }
 @keyframes colorDevelop{
-  0%{opacity:0;filter:blur(12px) saturate(0);transform:scale(.85)}
-  30%{opacity:.4;filter:blur(8px) saturate(.3);transform:scale(.92)}
-  60%{opacity:.75;filter:blur(4px) saturate(.7);transform:scale(.98)}
-  85%{opacity:.95;filter:blur(1px) saturate(.95);transform:scale(1.01)}
-  100%{opacity:1;filter:blur(0) saturate(1);transform:scale(1)}
+  0%{opacity:0;filter:blur(16px) saturate(0) brightness(.7);transform:scale(.8)}
+  20%{opacity:.3;filter:blur(10px) saturate(.15) brightness(.8);transform:scale(.88)}
+  45%{opacity:.6;filter:blur(6px) saturate(.5) brightness(.95);transform:scale(.95)}
+  65%{opacity:.8;filter:blur(3px) saturate(.85) brightness(1);transform:scale(1)}
+  82%{opacity:.95;filter:blur(1px) saturate(1.15) brightness(1.05);transform:scale(1.03)}
+  100%{opacity:1;filter:blur(0) saturate(1.1) brightness(1);transform:scale(1)}
 }
 @keyframes arrowFadeIn{
   from{opacity:0;transform:translateX(-6px)}
@@ -1630,8 +1733,7 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
     </div>
     <div class="reveal-btn-group">
       <button class="reveal-share-btn" onclick="shareStory()">分享到限動</button>
-      <button class="reveal-continue-btn" onclick="goToSnapFromReveal()">查看完整色彩快照</button>
-      <button class="reveal-meet-btn" onclick="goToService()">認識品牌色彩版面引導者 -- 青青</button>
+      <button class="reveal-continue-btn" onclick="goToService()">了解 Canva 品牌美感實作諮詢</button>
       <button class="reveal-back-btn" onclick="restartFlow()">重新選色</button>
     </div>
   </div>
@@ -1657,7 +1759,7 @@ button,a,label,.c-card,.clickable{-webkit-tap-highlight-color:transparent}
     <div class="swipe-hint" onclick="advanceCarousel()" style="cursor:pointer;">滑動查看三組色票 →</div>
 
     <div class="snap-btn-group">
-      <button class="see-more-btn" onclick="goToService()">了解 Canva 品牌美感實作諮詢</button>
+      <button class="see-more-btn" onclick="goToRevealFromSnap()">查看品牌色彩顯影</button>
       <button class="dl-snap-btn" onclick="downloadSnap()">下載快照圖片</button>
     </div>
     <button class="home-btn" onclick="goHome()">← 重新開始</button>
@@ -2013,13 +2115,13 @@ function goSnap(){
   history.push('pg-revealing');
   goTo('pg-revealing');
   buildSnap();
-  // 4.5秒後進入顯影結果頁
+  renderRevealPage();
+  // 7秒後進入色彩快照頁（讓暈染充分展開）
   setTimeout(function(){
-    history.push('pg-reveal');
-    renderRevealPage();
-    goTo('pg-reveal');
-    document.getElementById('pg-reveal').scrollTo(0,0);
-  }, 4500);
+    history.push('pg-snap');
+    goTo('pg-snap');
+    document.getElementById('pg-snap').scrollTo(0,0);
+  }, 7000);
 }
 
 function renderRevealPage(){
@@ -2062,6 +2164,12 @@ function goToSnapFromReveal(){
   history.push('pg-snap');
   goTo('pg-snap');
   document.getElementById('pg-snap').scrollTo(0,0);
+}
+
+function goToRevealFromSnap(){
+  history.push('pg-reveal');
+  goTo('pg-reveal');
+  document.getElementById('pg-reveal').scrollTo(0,0);
 }
 
 // ═══════════════════════════════════════
